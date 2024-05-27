@@ -101,7 +101,7 @@ def cs_body():
 
     # Tabs
     col1.subheader('Tabs')
-    col1.code(
+    col1.code('''
      # Insert containers separated into tabs:
      tab1, tab2 = st.tabs(["Tab 1", "Tab2"]),
      tab1.write("this is tab 1"),
@@ -110,7 +110,7 @@ def cs_body():
      # # You can also use "with" notation:
      # with tab1:
      #    st.radio('Select one:', [1, 2])
-    )
+    ''')
 
     # Control flow
     col1.subheader('Control flow')
