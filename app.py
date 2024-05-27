@@ -66,15 +66,15 @@ st.code('for i in range(8): foo()')
 
     ''')
      col1.text('Fixed width text')
-     col1.st.markdown('_Markdown_') # see #*
-     col1.st.caption('Balloons. Hundreds of them...')
-     col1.st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\')
-     col1.st.write('Most objects') # df, err, func, keras!
-     col1.st.write(['st', 'is <', 3]) # see *
-     col1.st.title('My title')
-     col1.st.header('My header')
-     col1.st.subheader('My sub')
-     col1.st.code('for i in range(8): foo()')
+     col1.markdown('_Markdown_') # see #*
+     col1.caption('Balloons. Hundreds of them...')
+     col1.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\')
+     col1.write('Most objects') # df, err, func, keras!
+     col1.write(['st', 'is <', 3]) # see *
+     col1.title('My title')
+     col1.header('My header')
+     col1.subheader('My sub')
+     col1.code('for i in range(8): foo()')
 
 
     # Display data
