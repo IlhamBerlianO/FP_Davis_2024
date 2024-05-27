@@ -57,25 +57,12 @@ def cs_body():
      # st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\'),
      st.write('Most objects'), # df, err, func, keras!
      st.write(['st', 'is <', 3]), # see *
-     st.title('My title'),
-     st.header('My header'),
-     st.subheader('My sub'),
+     # st.title('My title'),
+     # st.header('My header'),
+     # st.subheader('My sub'),
      st.code('for i in range(8): foo()')
-
-# * optional kwarg unsafe_allow_html = True
-
+     # * optional kwarg unsafe_allow_html = True
     )
-     # col1.text('Fixed width text')
-     # col1.markdown('_Markdown_') # see #*
-     # col1.caption('Balloons. Hundreds of them...')
-     # col1.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\')
-     # col1.write('Most objects') # df, err, func, keras!
-     # col1.write(['st', 'is <', 3]) # see *
-     # col1.title('My title')
-     # col1.header('My header')
-     # col1.subheader('My sub')
-     # col1.code('for i in range(8): foo()')
-
 
     # Display data
     col1.subheader('Display data')
