@@ -27,10 +27,9 @@ def cs_sidebar():
 
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
     st.sidebar.header('Adventurework Dashboard')
-    st.sidebar.markdown('__Select year__')
     st.sidebar.code('$ pip install streamlit')
     tahun = list(range(2019, 2025))
-    tahun_dipilih = st.sidebar.selectbox("Pilih tahun", tahun)
+    tahun_dipilih = st.sidebar.selectbox("__Pilih tahun__", tahun)
     st.sidebar.code('''
 # Import convention
 >>> import streamlit as st
