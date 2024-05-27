@@ -54,7 +54,7 @@ def cs_body():
      st.text('Fixed width text'),
      st.markdown('_Markdown_'), # see #*
      st.caption('Balloons. Hundreds of them...'),
-     st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\'),
+     # st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\'),
      st.write('Most objects'), # df, err, func, keras!
      st.write(['st', 'is <', 3]), # see *
      st.title('My title'),
