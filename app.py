@@ -60,7 +60,7 @@ def cs_body():
      # st.title('My title'),
      # st.header('My header'),
      # st.subheader('My sub'),
-     st.code('for i in range(8): foo()')
+     st.code('for i in range(8): foo()'),
      * optional kwarg unsafe_allow_html = True
     )
 
