@@ -50,7 +50,7 @@ def cs_body():
     
     # Display text
     col1.subheader('Display text')
-    col1.code(
+    col1.code('''
      st.text('Fixed width text'),
      st.markdown('_Markdown_'), # see #*
      st.caption('Balloons. Hundreds of them...'),
@@ -62,6 +62,7 @@ def cs_body():
      # st.subheader('My sub'),
      st.code('for i in range(8): foo()'),
      * optional kwarg unsafe_allow_html = True
+     '''
     )
 
     # Display data
