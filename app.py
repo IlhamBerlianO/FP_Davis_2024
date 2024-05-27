@@ -1,31 +1,8 @@
-"""
-Streamlit Cheat Sheet
-
-App to summarise streamlit docs v1.25.0
-
-There is also an accompanying png and pdf version
-
-https://github.com/daniellewisDL/streamlit-cheat-sheet
-
-v1.25.0
-20 August 2023
-
-Author:
-    @daniellewisDL : https://github.com/daniellewisDL
-
-Contributors:
-    @arnaudmiribel : https://github.com/arnaudmiribel
-    @akrolsmir : https://github.com/akrolsmir
-    @nathancarter : https://github.com/nathancarter
-
-"""
-
 import streamlit as st
 from pathlib import Path
 import base64
 
 # Initial page config
-
 st.set_page_config(
      page_title='Streamlit cheat sheet',
      layout="wide",
@@ -38,75 +15,35 @@ def main():
 
     return None
 
-# Thanks to streamlitopedia for the following code snippet
-
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
     encoded = base64.b64encode(img_bytes).decode()
     return encoded
-
-# sidebar
-
+    
+##########################
+# SIDEBAR
+##########################
 def cs_sidebar():
 
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
-    st.sidebar.header('Streamlit cheat sheet')
-
-    st.sidebar.markdown('''
-<small>Summary of the [docs](https://docs.streamlit.io/), as of [Streamlit v1.25.0](https://www.streamlit.io/).</small>
-    ''', unsafe_allow_html=True)
-
-    st.sidebar.markdown('__Install and import__')
-
+    st.sidebar.header('Adventurework Dashboard')
+    st.sidebar.markdown('__Select year__')
     st.sidebar.code('$ pip install streamlit')
-
+    tahun = list(range(2019, 2025))
+    tahun_dipilih = st.selectbox("Pilih tahun", tahun)
+    st.write(f"Anda memilih {tahun_dipilih}")
     st.sidebar.code('''
 # Import convention
 >>> import streamlit as st
 ''')
 
-    st.sidebar.markdown('__Add widgets to sidebar__')
-    st.sidebar.code('''
-# Just add it after st.sidebar:
->>> a = st.sidebar.radio(\'Choose:\',[1,2])
-    ''')
-
-    st.sidebar.markdown('__Magic commands__')
-    st.sidebar.code('''
-'_This_ is some __Markdown__'
-a=3
-'dataframe:', data
-''')
-
-    st.sidebar.markdown('__Command line__')
-    st.sidebar.code('''
-$ streamlit --help
-$ streamlit run your_script.py
-$ streamlit hello
-$ streamlit config show
-$ streamlit cache clear
-$ streamlit docs
-$ streamlit --version
-    ''')
-
-    st.sidebar.markdown('__Pre-release features__')
-    st.sidebar.code('''
-pip uninstall streamlit
-pip install streamlit-nightly --upgrade
-    ''')
-    st.sidebar.markdown('<small>Learn more about [experimental features](https://docs.streamlit.io/library/advanced-features/prerelease#beta-and-experimental-features)</small>', unsafe_allow_html=True)
-
-    st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
-    st.sidebar.markdown('''<small>[Cheat sheet v1.25.0](https://github.com/daniellewisDL/streamlit-cheat-sheet)  | Aug 2023 | [Daniel Lewis](https://daniellewisdl.github.io/)</small>''', unsafe_allow_html=True)
-
     return None
+
 
 ##########################
 # Main body of cheat sheet
 ##########################
-
 def cs_body():
-
     col1, col2, col3 = st.columns(3)
 
     #######################################
@@ -114,7 +51,6 @@ def cs_body():
     #######################################
     
     # Display text
-
     col1.subheader('Display text')
     col1.code('''
 st.text('Fixed width text')
@@ -133,7 +69,6 @@ st.code('for i in range(8): foo()')
     ''')
 
     # Display data
-
     col1.subheader('Display data')
     col1.code('''
 st.dataframe(my_dataframe)
@@ -144,7 +79,6 @@ st.metric(label="Temp", value="273 K", delta="1.2 K")
 
 
     # Display media
-
     col1.subheader('Display media')
     col1.code('''
 st.image('./header.png')
@@ -153,7 +87,6 @@ st.video(data)
     ''')
 
     # Columns
-
     col1.subheader('Columns')
     col1.code('''
 col1, col2 = st.columns(2)
@@ -171,7 +104,6 @@ col1, col2, col3 = st.columns([3,1,1])
 ''')
 
     # Tabs
-    
     col1.subheader('Tabs')
     col1.code('''
 # Insert containers separated into tabs:
@@ -185,7 +117,6 @@ col1, col2, col3 = st.columns([3,1,1])
 ''')
 
     # Control flow
-
     col1.subheader('Control flow')
     col1.code('''
 # Stop execution immediately:
@@ -201,7 +132,6 @@ st.experimental_rerun()
 ''')
     
     # Personalize apps for users
-
     col1.subheader('Personalize apps for users')
     col1.code('''
 # Show different content based on the user's email address.
@@ -219,7 +149,6 @@ st.experimental_rerun()
     #######################################
 
     # Display interactive widgets
-
     col2.subheader('Display interactive widgets')
     col2.code('''
 st.button('Hit me')
@@ -254,7 +183,6 @@ st.color_picker('Pick a color')
               ''')
 
     # Build chat-based apps
-
     col2.subheader('Build chat-based apps')
     col2.code('''
 # Insert a chat message container.
@@ -269,7 +197,6 @@ st.color_picker('Pick a color')
     col2.markdown('<small>Learn how to [build chat-based apps](https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps)</small>', unsafe_allow_html=True)
 
     # Mutate data
-
     col2.subheader('Mutate data')
     col2.code('''
 # Add rows to a dataframe after
@@ -284,7 +211,6 @@ st.color_picker('Pick a color')
 ''')
 
     # Display code
-
     col2.subheader('Display code')
     col2.code('''
 st.echo()
@@ -293,7 +219,6 @@ st.echo()
     ''')
 
     # Placeholders, help, and options
-
     col2.subheader('Placeholders, help, and options')
     col2.code('''
 # Replace any single element.
@@ -316,13 +241,12 @@ st.experimental_get_query_params()
 st.experimental_set_query_params(**params)
     ''')
 
+    
     #######################################
     # COLUMN 3
     #######################################
 
-
     # Connect to data sources
-    
     col3.subheader('Connect to data sources')
 
     col3.code('''
@@ -339,7 +263,6 @@ conn = st.experimental_connection('snowpark')
 
 
     # Optimize performance
-
     col3.subheader('Optimize performance')
     col3.write('Cache data objects')
     col3.code('''
@@ -396,7 +319,6 @@ conn = st.experimental_connection('snowpark')
 
 
     # Display progress and status
-
     col3.subheader('Display progress and status')
     col3.code('''
 # Show a spinner during a process
@@ -422,7 +344,9 @@ st.exception(e)
 
     return None
 
-# Run main()
 
+##########################
+# Run main()
+##########################
 if __name__ == '__main__':
     main()
