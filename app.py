@@ -27,13 +27,13 @@ def cs_sidebar():
 
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
     st.sidebar.header('Adventurework Dashboard')
-    st.sidebar.code('$ pip install streamlit')
     tahun = list(range(2019, 2025))
     tahun_dipilih = st.sidebar.selectbox("__Pilih tahun__", tahun)
-    st.sidebar.code('''
-# Import convention
->>> import streamlit as st
-''')
+#     st.sidebar.code('$ pip install streamlit')
+#     st.sidebar.code('''
+# # Import convention
+# >>> import streamlit as st
+# ''')
 
     return None
 
@@ -65,6 +65,17 @@ st.code('for i in range(8): foo()')
 # * optional kwarg unsafe_allow_html = True
 
     ''')
+     col1.st.text('Fixed width text')
+     col1.st.markdown('_Markdown_') # see #*
+     col1.st.caption('Balloons. Hundreds of them...')
+     col1.st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\')
+     col1.st.write('Most objects') # df, err, func, keras!
+     col1.st.write(['st', 'is <', 3]) # see *
+     col1.st.title('My title')
+     col1.st.header('My header')
+     col1.st.subheader('My sub')
+     col1.st.code('for i in range(8): foo()')
+
 
     # Display data
     col1.subheader('Display data')
