@@ -65,7 +65,7 @@ st.code('for i in range(8): foo()')
 # * optional kwarg unsafe_allow_html = True
 
     ''')
-     col1.st.text('Fixed width text')
+     col1.text('Fixed width text')
      col1.st.markdown('_Markdown_') # see #*
      col1.st.caption('Balloons. Hundreds of them...')
      col1.st.latex(r\'\'\' e^{i\pi} + 1 = 0 \'\'\')
