@@ -30,8 +30,7 @@ def cs_sidebar():
     st.sidebar.markdown('__Select year__')
     st.sidebar.code('$ pip install streamlit')
     tahun = list(range(2019, 2025))
-    tahun_dipilih = st.selectbox("Pilih tahun", tahun)
-    st.write(f"Anda memilih {tahun_dipilih}")
+    tahun_dipilih = st.sidebar.selectbox("Pilih tahun", tahun)
     st.sidebar.code('''
 # Import convention
 >>> import streamlit as st
