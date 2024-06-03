@@ -2,7 +2,6 @@ import streamlit as st
 from pathlib import Path
 import base64
 import matplotlib.pyplot as plt
-import mysql.connector
 
 # Menghubungkan ke database MySQL
 conn = st.connection('mysql', type='sql')
