@@ -4,9 +4,6 @@ import base64
 import mysql.connector
 import matplotlib.pyplot as plt
 
-# Menghubungkan ke database MySQL
-conn = st.connection('mysql', type='sql')
-
 # Initial page config
 st.set_page_config(
     page_title='Streamlit cheat sheet',
@@ -23,7 +20,7 @@ st.set_page_config(
 
 def main():
     cs_sidebar()
-    cs_body()
+    cs_body()
 
     return None
 
@@ -45,6 +42,9 @@ def cs_sidebar():
 # Main body of cheat sheet
 ##########################
 def cs_body():
+    # Menghubungkan ke database MySQL
+    conn = st.connection('mysql', type='sql')
+    
     col1, col2, col3 = st.columns(3)
 
     #######################################
