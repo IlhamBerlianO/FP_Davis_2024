@@ -42,7 +42,7 @@ def cs_sidebar():
 ##########################
 # Main body of cheat sheet
 ##########################
-    
+def cs_body():
     col1, col2, col3 = st.columns(3)
 
     #######################################
