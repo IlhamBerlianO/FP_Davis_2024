@@ -82,4 +82,38 @@ def cs_body(conn):
     # Mengambil hasil query
     results = cursor.fetchall()
      
-    # Memproses hasil query ke dalam format
+    # Memproses hasil query ke dalam format yang sesuai untuk grafik
+    month = []
+    total_product_by_month = []
+    for row in results:
+        month.append(row[0])  
+        total_product_by_month.append(row[1])     
+     
+    # Menampilkan grafik menggunakan widget st.line_chart()
+    st.subheader('Comparison (Line Chart)')
+    st.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
+    data = {'Month': month, 'Total Product': total_product_by_month}
+    line_chart = st.line_chart(data)
+     
+    # Perlu? 1
+    col1.subheader('Percobaan')
+
+    #######################################
+    # COLUMN 2
+    #######################################
+
+    # Display interactive widgets
+    col2.subheader('Display interactive widgets')
+    
+    #######################################
+    # COLUMN 3
+    #######################################
+
+    # Connect to data sources
+    col3.subheader('Connect to data sources')
+
+##########################
+# Run main()
+##########################
+if __name__ == '__main__':
+    main()
