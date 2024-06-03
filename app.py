@@ -4,19 +4,8 @@ import base64
 import mysql.connector
 import matplotlib.pyplot as plt
 
-def connect_to_database():
-    try:
-        # Menghubungkan ke database MySQL
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="dump_aw"
-        )
-        return conn
-    except mysql.connector.Error as err:
-        st.error(f"Error: {err}")
-        return None
+# Menghubungkan ke database MySQL
+conn = st.connection('mysql', type='sql')
 
 # Initial page config
 st.set_page_config(
