@@ -4,7 +4,19 @@ import base64
 import matplotlib.pyplot as plt
 
 # Menghubungkan ke database MySQL
-conn = st.connection('mysql', type='sql')
+def connect_to_database():
+    try:
+        # Menghubungkan ke database MySQL
+        conn = mysql.connector.connect(
+            host=st.secrets["mysql"]["host"],
+            user=st.secrets["mysql"]["username"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"]
+        )
+        return conn
+    except mysql.connector.Error as err:
+        st.error(f"Error: {err}")
+        return None
 
 # Initial page config
 st.set_page_config(
@@ -14,8 +26,10 @@ st.set_page_config(
 )
 
 def main():
-    cs_sidebar()
-    cs_body()
+    conn = connect_to_database()
+    if conn is not None:
+        cs_sidebar()
+        cs_body(conn)
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
