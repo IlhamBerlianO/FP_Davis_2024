@@ -1,4 +1,5 @@
 streamlit
 matplotlib
 SQLAlchemy==2.0.29
-mysqlclient
+mysql-connector-python
+
