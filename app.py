@@ -4,26 +4,32 @@ import base64
 import mysql.connector
 import matplotlib.pyplot as plt
 
-# Menghubungkan ke database MySQL
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="dump_aw"
-)
+def connect_to_database():
+    try:
+        # Menghubungkan ke database MySQL
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="dump_aw"
+        )
+        return conn
+    except mysql.connector.Error as err:
+        st.error(f"Error: {err}")
+        return None
 
 # Initial page config
 st.set_page_config(
-     page_title='Streamlit cheat sheet',
-     layout="wide",
-     initial_sidebar_state="expanded",
+    page_title='Streamlit cheat sheet',
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 def main():
-    cs_sidebar()
-    cs_body()
-
-    return None
+    conn = connect_to_database()
+    if conn is not None:
+        cs_sidebar()
+        cs_body(conn)
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
@@ -34,24 +40,15 @@ def img_to_bytes(img_path):
 # SIDEBAR
 ##########################
 def cs_sidebar():
-
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
     st.sidebar.header('Adventurework Dashboard')
     tahun = list(range(2019, 2025))
     tahun_dipilih = st.sidebar.selectbox("__Pilih tahun__", tahun)
-#     st.sidebar.code('$ pip install streamlit')
-#     st.sidebar.code('''
-# # Import convention
-# >>> import streamlit as st
-# ''')
-
-    return None
-
 
 ##########################
 # Main body of cheat sheet
 ##########################
-def cs_body():
+def cs_body(conn):
     col1, col2, col3 = st.columns(3)
 
     #######################################
@@ -85,41 +82,4 @@ def cs_body():
     # Mengambil hasil query
     results = cursor.fetchall()
      
-    # Memproses hasil query ke dalam format yang sesuai untuk grafik
-    month = []
-    total_product_by_month = []
-    for row in results:
-        month.append(row[0])  
-        total_product_by_month.append(row[1])     
-     
-    # Menampilkan grafik menggunakan widget st.line_chart()
-    st.subheader('Comparison (Line Chart)')
-    st.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
-    data = {'Month': month, 'Total Product': total_product_by_month}
-    line_chart = st.line_chart(data)
-     
-    # Perlu? 1
-    col1.subheader('Percobaan')
-
-    #######################################
-    # COLUMN 2
-    #######################################
-
-    # Display interactive widgets
-    col2.subheader('Display interactive widgets')
-    
-    #######################################
-    # COLUMN 3
-    #######################################
-
-    # Connect to data sources
-    col3.subheader('Connect to data sources')
-
-    return None
-
-
-##########################
-# Run main()
-##########################
-if __name__ == '__main__':
-    main()
+    # Memproses hasil query ke dalam format
