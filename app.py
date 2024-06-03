@@ -4,20 +4,15 @@ import base64
 import mysql.connector
 import matplotlib.pyplot as plt
 
-def connect_to_database():
-    try:
-        # Menghubungkan ke database MySQL menggunakan informasi dari secrets
-        conn = mysql.connector.connect(
-            host=st.secrets["mysql"]["host"],
-            user=st.secrets["mysql"]["username"],
-            password=st.secrets["mysql"]["password"],
-            database=st.secrets["mysql"]["database"],
-            port=st.secrets["mysql"]["port"]
-        )
-        return conn
-    except mysql.connector.Error as err:
-        st.error(f"Failed to connect to MySQL: {err}")
-        return None
+# Menghubungkan ke database MySQL
+conn = st.connection('mysql', type='sql')
+
+# Initial page config
+st.set_page_config(
+    page_title='Streamlit cheat sheet',
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 # Initial page config
 st.set_page_config(
@@ -27,12 +22,8 @@ st.set_page_config(
 )
 
 def main():
-    conn = connect_to_database()
-    if conn is not None:
-        cs_sidebar()
-        cs_body(conn)
-        # Menutup koneksi setelah selesai digunakan
-        conn.close()
+    cs_sidebar()
+    cs_body()
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
@@ -51,7 +42,7 @@ def cs_sidebar():
 ##########################
 # Main body of cheat sheet
 ##########################
-def cs_body(conn):
+    
     col1, col2, col3 = st.columns(3)
 
     #######################################
