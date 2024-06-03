@@ -4,6 +4,7 @@ import base64
 import mysql.connector
 import matplotlib.pyplot as plt
 
+@st.cache
 # Initial page config
 st.set_page_config(
     page_title='Streamlit cheat sheet',
