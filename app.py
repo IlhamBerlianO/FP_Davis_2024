@@ -15,7 +15,7 @@ st.set_page_config(
 
 def main():
     cs_sidebar()
-    cs_body(conn)
+    cs_body()
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
