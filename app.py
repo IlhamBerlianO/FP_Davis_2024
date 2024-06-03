@@ -1,18 +1,18 @@
 import streamlit as st
 from pathlib import Path
 import base64
-import matplotlib.pyplot as plt
 import mysql.connector
+import matplotlib.pyplot as plt
 
-# Menghubungkan ke database MySQL
 def connect_to_database():
     try:
-        # Menghubungkan ke database MySQL
+        # Menghubungkan ke database MySQL menggunakan informasi dari secrets
         conn = mysql.connector.connect(
             host=st.secrets["mysql"]["host"],
             user=st.secrets["mysql"]["username"],
             password=st.secrets["mysql"]["password"],
-            database=st.secrets["mysql"]["database"]
+            database=st.secrets["mysql"]["database"],
+            port=st.secrets["mysql"]["port"]
         )
         return conn
     except mysql.connector.Error as err:
