@@ -16,12 +16,12 @@ def connect_to_database():
         )
         return conn
     except mysql.connector.Error as err:
-        st.error(f"Error: {err}")
+        st.error(f"Failed to connect to MySQL: {err}")
         return None
 
 # Initial page config
 st.set_page_config(
-    page_title='Streamlit cheat sheet',
+    page_title='Adventurework Dashboard',
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -31,6 +31,8 @@ def main():
     if conn is not None:
         cs_sidebar()
         cs_body(conn)
+        # Menutup koneksi setelah selesai digunakan
+        conn.close()
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
