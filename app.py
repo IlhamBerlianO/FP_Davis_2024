@@ -15,10 +15,8 @@ st.set_page_config(
 )
 
 def main():
-    conn = connect_to_database()
-    if conn is not None:
-        cs_sidebar()
-        cs_body(conn)
+    cs_sidebar()
+    cs_body(conn)
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
