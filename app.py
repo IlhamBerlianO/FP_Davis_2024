@@ -85,11 +85,11 @@ def cs_body():
     
         cursor.execute(base_query)
         data = pd.DataFrame(cursor.fetchall(), columns=['Month', 'Total_Order_Quantity'])
-        col1.markdown(data)
+        
         cursor.close()
         dataBase.close()
         
-        
+        col1.markdown(data)
      
     # Perlu? 1
     col1.subheader('Percobaan')
