@@ -48,9 +48,10 @@ def cs_body():
 
     # Menghubungkan ke database MySQL
     conn = mysql.connector.connect(
-        host="localhost",
         user="root",
         password="",
+        host="localhost",
+        port=3306,
         database="dump_aw"
     )
     
