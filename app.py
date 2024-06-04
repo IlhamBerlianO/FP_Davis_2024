@@ -79,19 +79,13 @@ def cs_body(conn):
     
     # Memproses hasil query ke dalam format yang sesuai untuk grafik
     month = []
-    total_product_by_month = []
+    totals = []
     for row in results:
         month.append(row[0])  
-        total_product_by_month.append(row[1])     
+        totals.append(row[1])     
     
     # Plot grafik
-    plt.plot(month, totals, marker='o')
-    plt.xlabel('Month')
-    plt.ylabel('Total Product')
-    plt.title('Total Products by Month')
-    plt.xticks(month)
-    plt.tight_layout()
-    plt.show()
+    col1.pyplot(plt.plot(month, totals, marker='o'))
      
     # Perlu? 1
     col1.subheader('Percobaan')
