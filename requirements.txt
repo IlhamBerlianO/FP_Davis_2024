@@ -2,3 +2,5 @@ streamlit
 matplotlib
 mysql-connector-python
 pandas
+pathlib
+base64
