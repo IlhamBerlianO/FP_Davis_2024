@@ -20,7 +20,7 @@ def connect_to_database():
         port=port,
         database=database
     )
-return conn
+    return conn
 
 # Menggunakan fungsi untuk mendapatkan koneksi
 conn = connect_to_database()
