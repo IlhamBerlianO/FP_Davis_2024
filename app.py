@@ -46,17 +46,24 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    # Menghubungkan ke database MySQL
-    conn = mysql.connector.connect(
-        host="localhost",
-        port=3306,
-        user="root",
-        password="",
-        database="dump_aw"
-    )
+    # Membuat koneksi ke database
+    def create_connection():
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="dump_aw"
+        )
+        return conn
     
-    # Membuat kursor untuk eksekusi query SQL
-    cursor = conn.cursor()
+   # Fungsi untuk menjalankan query ke database
+    def run_query(query):
+        conn = create_connection()
+        cursor = conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        conn.close()
+        return result
     
     # Query SQL Comparison
     comparison = """
@@ -73,21 +80,10 @@ def cs_body():
             t.MonthNumberOfYear;
     """
     
-    # Eksekusi query
-    cursor.execute(comparison)
+    # Menjalankan query dan mendapatkan hasilnya
+    result1 = run_query(comparison)
     
-    # Mengambil hasil query
-    results = cursor.fetchall()
     
-    # Memproses hasil query ke dalam format yang sesuai untuk grafik
-    month = []
-    totals = []
-    for row in results:
-        month.append(row[0])  
-        totals.append(row[1])     
-    
-    # Plot grafik
-    st.pyplot(plt.plot(month, totals, marker='o'))
      
     # Perlu? 1
     col1.subheader('Percobaan')
