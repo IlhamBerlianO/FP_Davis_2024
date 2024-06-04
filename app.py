@@ -6,18 +6,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Menghubungkan ke database MySQL
-def connect_to_database():
-    try:
-        return mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="",
-            database="dump_aw"
-            )
-        return conn
-    except mysql.connector.Error as err:
-        st.error(f"Error: {err}")
-        return None
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="dump_aw"
+)
 
 # Initial page config
 st.set_page_config(
@@ -28,7 +22,7 @@ st.set_page_config(
 
 def main():
     cs_sidebar()
-    cs_body()
+    cs_body(conn)
 
     return None
 
@@ -49,8 +43,10 @@ def cs_sidebar():
 ##########################
 # Main body of cheat sheet
 ##########################
-def cs_body():
+def cs_body(conn):
     col1, col2, col3 = st.columns(3)
+    # Membuat kursor untuk eksekusi query SQL
+    cursor = conn.cursor()
     
     #######################################
     # COLUMN 1
@@ -60,37 +56,42 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
     
-    def fetch_data(country=None):
-        dataBase = create_connection()
-        cursor = dataBase.cursor()
+    # Query SQL Comparison
+    comparison = """
+        SELECT 
+            t.MonthNumberOfYear AS Month,
+            SUM(fs.OrderQuantity) AS Total_Order_Quantity 
+        FROM 
+            factinternetsales fs 
+        JOIN 
+            dimtime t ON fs.OrderDateKey = t.TimeKey 
+        GROUP BY 
+            t.MonthNumberOfYear
+        ORDER BY 
+            t.MonthNumberOfYear;
+    """
     
-        # Query to fetch data
-        base_query = """
-            SELECT 
-                t.MonthNumberOfYear AS Month,
-                SUM(fs.OrderQuantity) AS Total_Order_Quantity 
-            FROM 
-                factinternetsales fs 
-            JOIN 
-                dimtime t ON fs.OrderDateKey = t.TimeKey 
-            GROUP BY 
-                t.MonthNumberOfYear
-            ORDER BY 
-                t.MonthNumberOfYear;
-        """
-        
-        # if country:
-        #     query = base_query.format(f"WHERE dst.SalesTerritoryCountry = '{country}'")
-        # else:
-        #     query = base_query.format("")
+    # Eksekusi query
+    cursor.execute(comparison)
     
-        cursor.execute(base_query)
-        data = pd.DataFrame(cursor.fetchall(), columns=['Month', 'Total_Order_Quantity'])
-        
-        cursor.close()
-        dataBase.close()
-        
-        col1.markdown(data)
+    # Mengambil hasil query
+    results = cursor.fetchall()
+    
+    # Memproses hasil query ke dalam format yang sesuai untuk grafik
+    month = []
+    total_product_by_month = []
+    for row in results:
+        month.append(row[0])  
+        total_product_by_month.append(row[1])     
+    
+    # Plot grafik
+    plt.plot(month, totals, marker='o')
+    plt.xlabel('Month')
+    plt.ylabel('Total Product')
+    plt.title('Total Products by Month')
+    plt.xticks(month)
+    plt.tight_layout()
+    plt.show()
      
     # Perlu? 1
     col1.subheader('Percobaan')
