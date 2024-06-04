@@ -54,7 +54,7 @@ def cs_body():
         password="",
         database="dump_aw"
     )
-        
+    
     # Membuat kursor untuk eksekusi query SQL
     cursor = conn.cursor()
     
@@ -87,7 +87,7 @@ def cs_body():
         totals.append(row[1])     
     
     # Plot grafik
-    col1.pyplot(plt.plot(month, totals, marker='o'))
+    st.pyplot(plt.plot(month, totals, marker='o'))
      
     # Perlu? 1
     col1.subheader('Percobaan')
