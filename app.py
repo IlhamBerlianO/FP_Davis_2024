@@ -83,7 +83,8 @@ def cs_body():
     # Menjalankan query dan mendapatkan hasilnya
     result1 = run_query(comparison)
     
-    
+    # Menampilkan data di Streamlit
+    st.write(result)
      
     # Perlu? 1
     col1.subheader('Percobaan')
