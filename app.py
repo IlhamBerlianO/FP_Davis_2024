@@ -65,11 +65,10 @@ def cs_body():
    #      conn.close()
    #      return result
 
-       engine = create_engine("mysql://username@localhost/dump_aw")
-    
-    # Query SQL Comparison
-    comparison = """
-        SELECT 
+    engine = create_engine("mysql://username@localhost/dump_aw")
+
+    result = engine.execute("""
+        SSELECT 
             t.MonthNumberOfYear AS Month,
             SUM(fs.OrderQuantity) AS Total_Order_Quantity 
         FROM 
@@ -79,13 +78,28 @@ def cs_body():
         GROUP BY 
             t.MonthNumberOfYear
         ORDER BY 
-            t.MonthNumberOfYear;
-    """
+            t.MonthNumberOfYear;""").fetchall()
     
-    # Menjalankan query dan mendapatkan hasilnya
-    result1 = run_query(comparison)
+    # Query SQL Comparison
+    # comparison = """
+    #     SELECT 
+    #         t.MonthNumberOfYear AS Month,
+    #         SUM(fs.OrderQuantity) AS Total_Order_Quantity 
+    #     FROM 
+    #         factinternetsales fs 
+    #     JOIN 
+    #         dimtime t ON fs.OrderDateKey = t.TimeKey 
+    #     GROUP BY 
+    #         t.MonthNumberOfYear
+    #     ORDER BY 
+    #         t.MonthNumberOfYear;
+    # """
     
-    # Menampilkan data di Streamlit
+    # # Menjalankan query dan mendapatkan hasilnya
+    # result1 = run_query(comparison)
+    
+    # # Menampilkan data di Streamlit
+    # st.write(result)
     st.write(result)
      
     # Perlu? 1
