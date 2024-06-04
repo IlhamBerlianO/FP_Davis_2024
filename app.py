@@ -5,22 +5,20 @@ import base64
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# user = st.secrets["mysql"]["username"]
+# password = st.secrets["mysql"]["password"]
+# host = st.secrets["mysql"]["host"]
+# port = st.secrets["mysql"]["port"]
+# database = st.secrets["mysql"]["database"]
 
-user = st.secrets["mysql"]["username"]
-password = st.secrets["mysql"]["password"]
-host = st.secrets["mysql"]["host"]
-port = st.secrets["mysql"]["port"]
-database = st.secrets["mysql"]["database"]
-
-# Menghubungkan ke database MySQL
-conn = mysql.connector.connect(
-    user=user,
-    password=password,
-    host=host,
-    port=port,
-    database=database
-)
-
+# # Menghubungkan ke database MySQL
+# conn = mysql.connector.connect(
+#     user=user,
+#     password=password,
+#     host=host,
+#     port=port,
+#     database=database
+# )
 
 # Menggunakan fungsi untuk mendapatkan koneksi
 conn = connect_to_database()
@@ -65,6 +63,21 @@ def cs_body():
     # Comparison (Line Chart)
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
+
+    user = st.secrets["mysql"]["username"]
+    password = st.secrets["mysql"]["password"]
+    host = st.secrets["mysql"]["host"]
+    port = st.secrets["mysql"]["port"]
+    database = st.secrets["mysql"]["database"]
+    
+    # Menghubungkan ke database MySQL
+    conn = mysql.connector.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=port,
+        database=database
+    )
     
     # # Membuat kursor untuk eksekusi query SQL
     # cursor = conn.cursor()
