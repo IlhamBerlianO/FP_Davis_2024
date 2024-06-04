@@ -65,7 +65,7 @@ def cs_body():
    #      conn.close()
    #      return result
 
-    engine = create_engine("mysql+pymysql://root@localhost/dump_aw")
+    engine = create_engine("mysql://root@localhost/dump_aw")
 
     result = engine.execute("""
         SELECT 
