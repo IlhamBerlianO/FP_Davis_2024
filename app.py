@@ -36,7 +36,7 @@ def cs_sidebar():
 ##########################
 def cs_body():
     # Menghubungkan ke database MySQL
-    conn = st.connection("mysql", type="mysql")
+    conn = st.connection("mysql", type="sql")
     
     col1, col2, col3 = st.columns(3)
 
