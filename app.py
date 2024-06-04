@@ -1,7 +1,6 @@
 import streamlit as st
 from pathlib import Path
 import base64
-import mysql.connector
 import matplotlib.pyplot as plt
 
 # Initial page config
