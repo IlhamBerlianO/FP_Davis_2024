@@ -20,8 +20,8 @@ import pandas as pd
 #     database=database
 # )
 
-# Menggunakan fungsi untuk mendapatkan koneksi
-conn = connect_to_database()
+# # Menggunakan fungsi untuk mendapatkan koneksi
+# conn = connect_to_database()
 
 # Initial page config
 st.set_page_config(
