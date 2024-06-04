@@ -5,12 +5,13 @@ import base64
 import matplotlib.pyplot as plt
 import pandas as pd
 
-user = st.secrets["mysql"]["username"]
-password = st.secrets["mysql"]["password"]
-host = st.secrets["mysql"]["host"]
-port = st.secrets["mysql"]["port"]
-database = st.secrets["mysql"]["database"]
-    
+def connect_to_database():
+    user = st.secrets["mysql"]["username"]
+    password = st.secrets["mysql"]["password"]
+    host = st.secrets["mysql"]["host"]
+    port = st.secrets["mysql"]["port"]
+    database = st.secrets["mysql"]["database"]
+
 # Menghubungkan ke database MySQL
 conn = mysql.connector.connect(
     user=user,
