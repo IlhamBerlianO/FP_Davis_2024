@@ -12,14 +12,18 @@ def connect_to_database():
     port = st.secrets["mysql"]["port"]
     database = st.secrets["mysql"]["database"]
 
-# Menghubungkan ke database MySQL
-conn = mysql.connector.connect(
-    user=user,
-    password=password,
-    host=host,
-    port=port,
-    database=database
-)
+    # Menghubungkan ke database MySQL
+    conn = mysql.connector.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=port,
+        database=database
+    )
+return conn
+
+# Menggunakan fungsi untuk mendapatkan koneksi
+conn = connect_to_database()
 
 # Initial page config
 st.set_page_config(
