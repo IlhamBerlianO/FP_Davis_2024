@@ -68,7 +68,7 @@ def cs_body():
     engine = create_engine("mysql://username@localhost/dump_aw")
 
     result = engine.execute("""
-        SSELECT 
+        SELECT 
             t.MonthNumberOfYear AS Month,
             SUM(fs.OrderQuantity) AS Total_Order_Quantity 
         FROM 
