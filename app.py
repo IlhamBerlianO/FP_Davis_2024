@@ -46,6 +46,12 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
+    # Initialize connection.
+    conn = st.connection('mysql', type='sql')
+    
+    # Perform query.
+    df = conn.query('SELECT MonthNumberOfYear from dimtime;', ttl=600)
+    
     # # Menghubungkan ke database MySQL
     # conn = mysql.connector.connect(
     #     user="root",
