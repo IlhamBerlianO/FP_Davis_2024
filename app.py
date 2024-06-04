@@ -46,9 +46,10 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-     # Menghubungkan ke database MySQL
+    # Menghubungkan ke database MySQL
     conn = mysql.connector.connect(
         host="localhost",
+        port=3306,
         user="root",
         password="",
         database="dump_aw"
