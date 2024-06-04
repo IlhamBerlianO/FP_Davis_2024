@@ -2,4 +2,3 @@ streamlit
 mysql-connector-python
 matplotlib
 pandas
-SQLAlchemy==1.4.0
