@@ -46,28 +46,23 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-   #  # Membuat koneksi ke database
-   #  def create_connection():
-   #      conn = mysql.connector.connect(
-   #          host="localhost",
-   #          user="root",
-   #          password="",
-   #          database="dump_aw"
-   #      )
-   #      return conn
+    # Membuat koneksi ke database
+    def create_connection():
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="dump_aw"
+        )
+        return conn
     
-   # # Fungsi untuk menjalankan query ke database
-   #  def run_query(query):
-   #      conn = create_connection()
-   #      cursor = conn.cursor()
-   #      cursor.execute(query)
-   #      result = cursor.fetchall()
-   #      conn.close()
-   #      return result
+    # Fungsi untuk menjalankan query ke database
+    dataBase = create_connection()
+    cursor = dataBase.cursor()
 
-    engine = create_engine("mysql://root@localhost/dump_aw")
-
-    result = engine.execute("""
+    
+    # Query SQL Comparison
+    comparison = """
         SELECT 
             t.MonthNumberOfYear AS Month,
             SUM(fs.OrderQuantity) AS Total_Order_Quantity 
@@ -78,29 +73,15 @@ def cs_body():
         GROUP BY 
             t.MonthNumberOfYear
         ORDER BY 
-            t.MonthNumberOfYear;""").fetchall()
+            t.MonthNumberOfYear;
+    """
     
-    # Query SQL Comparison
-    # comparison = """
-    #     SELECT 
-    #         t.MonthNumberOfYear AS Month,
-    #         SUM(fs.OrderQuantity) AS Total_Order_Quantity 
-    #     FROM 
-    #         factinternetsales fs 
-    #     JOIN 
-    #         dimtime t ON fs.OrderDateKey = t.TimeKey 
-    #     GROUP BY 
-    #         t.MonthNumberOfYear
-    #     ORDER BY 
-    #         t.MonthNumberOfYear;
-    # """
+    # Menjalankan query dan mendapatkan hasilnya
+    cursor.execute(query)
+    data = pd.DataFrame(cursor.fetchall(), columns=['YearlyIncome', 'TotalSales'])
     
-    # # Menjalankan query dan mendapatkan hasilnya
-    # result1 = run_query(comparison)
-    
-    # # Menampilkan data di Streamlit
-    # st.write(result)
-    st.write(result)
+    # Menampilkan data di Streamlit
+    st.write(data)
      
     # Perlu? 1
     col1.subheader('Percobaan')
