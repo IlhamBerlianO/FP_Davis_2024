@@ -1,7 +1,22 @@
 import streamlit as st
+import mysql.connector
 from pathlib import Path
 import base64
 import matplotlib.pyplot as plt
+
+# Menghubungkan ke database MySQL
+def connect_to_database():
+    try:
+        return mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="",
+            database="dump_aw"
+            )
+        return conn
+    except mysql.connector.Error as err:
+        st.error(f"Error: {err}")
+        return None
 
 # Initial page config
 st.set_page_config(
@@ -34,11 +49,8 @@ def cs_sidebar():
 # Main body of cheat sheet
 ##########################
 def cs_body():
-    # Menghubungkan ke database MySQL
-    conn = st.connection('mysql', type='sql')
-    
     col1, col2, col3 = st.columns(3)
-
+    
     #######################################
     # COLUMN 1
     #######################################
@@ -46,42 +58,38 @@ def cs_body():
     # Comparison (Line Chart)
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
-    # Membuat kursor untuk eksekusi query SQL
-    cursor = conn.cursor()
-     
-    # Query SQL Comparison
-    comparison = """
-        SELECT 
-            t.MonthNumberOfYear AS Month,
-            SUM(fs.OrderQuantity) AS Total_Order_Quantity 
-        FROM 
-            factinternetsales fs 
-        JOIN 
-            dimtime t ON fs.OrderDateKey = t.TimeKey 
-        GROUP BY 
-            t.MonthNumberOfYear
-        ORDER BY 
-            t.MonthNumberOfYear;
-    """
-     
-    # Eksekusi query
-    cursor.execute(comparison)
-     
-    # Mengambil hasil query
-    results = cursor.fetchall()
-     
-    # Memproses hasil query ke dalam format yang sesuai untuk grafik
-    month = []
-    total_product_by_month = []
-    for row in results:
-        month.append(row[0])  
-        total_product_by_month.append(row[1])     
-     
-    # Menampilkan grafik menggunakan widget st.line_chart()
-    st.subheader('Comparison (Line Chart)')
-    st.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
-    data = {'Month': month, 'Total Product': total_product_by_month}
-    line_chart = st.line_chart(data)
+    
+    def fetch_data(country=None):
+        dataBase = create_connection()
+        cursor = dataBase.cursor()
+    
+        # Query to fetch data
+        base_query = """
+            SELECT 
+                t.MonthNumberOfYear AS Month,
+                SUM(fs.OrderQuantity) AS Total_Order_Quantity 
+            FROM 
+                factinternetsales fs 
+            JOIN 
+                dimtime t ON fs.OrderDateKey = t.TimeKey 
+            GROUP BY 
+                t.MonthNumberOfYear
+            ORDER BY 
+                t.MonthNumberOfYear;
+        """
+        
+        # if country:
+        #     query = base_query.format(f"WHERE dst.SalesTerritoryCountry = '{country}'")
+        # else:
+        #     query = base_query.format("")
+    
+        cursor.execute(base_query)
+        data = pd.DataFrame(cursor.fetchall(), columns=['Month', 'Total_Order_Quantity'])
+    
+        cursor.close()
+        dataBase.close()
+        
+        return data
      
     # Perlu? 1
     col1.subheader('Percobaan')
