@@ -46,20 +46,16 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    # Membuat koneksi ke database
-    def create_connection():
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="dump_aw"
-        )
-        return conn
+    # Menghubungkan ke database MySQL
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="dump_aw"
+    )
     
-    # Fungsi untuk menjalankan query ke database
-    dataBase = create_connection()
-    cursor = dataBase.cursor()
-
+    # Membuat kursor untuk eksekusi query SQL
+    cursor = conn.cursor()
     
     # Query SQL Comparison
     comparison = """
@@ -76,12 +72,27 @@ def cs_body():
             t.MonthNumberOfYear;
     """
     
-    # Menjalankan query dan mendapatkan hasilnya
-    cursor.execute(query)
-    data = pd.DataFrame(cursor.fetchall(), columns=['YearlyIncome', 'TotalSales'])
+    # Eksekusi query
+    cursor.execute(comparison)
     
-    # Menampilkan data di Streamlit
-    st.write(data)
+    # Mengambil hasil query
+    results = cursor.fetchall()
+    
+    # Memproses hasil query ke dalam format yang sesuai untuk grafik
+    month = []
+    total_product_by_month = []
+    for row in results:
+        month.append(row[0])  
+        total_product_by_month.append(row[1])     
+    
+    # Plot grafik
+    plt.plot(month, totals, marker='o')
+    plt.xlabel('Month')
+    plt.ylabel('Total Product')
+    plt.title('Total Products by Month')
+    plt.xticks(month)
+    plt.tight_layout()
+    plt.show()
      
     # Perlu? 1
     col1.subheader('Percobaan')
