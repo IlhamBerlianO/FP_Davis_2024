@@ -46,54 +46,54 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    # Menghubungkan ke database MySQL
-    conn = mysql.connector.connect(
-        user="root",
-        password="",
-        host="localhost",
-        port=3306,
-        database="dump_aw"
-    )
+    # # Menghubungkan ke database MySQL
+    # conn = mysql.connector.connect(
+    #     user="root",
+    #     password="",
+    #     host="localhost",
+    #     port=3306,
+    #     database="dump_aw"
+    # )
     
-    # Membuat kursor untuk eksekusi query SQL
-    cursor = conn.cursor()
+    # # Membuat kursor untuk eksekusi query SQL
+    # cursor = conn.cursor()
     
-    # Query SQL Comparison
-    comparison = """
-        SELECT 
-            t.MonthNumberOfYear AS Month,
-            SUM(fs.OrderQuantity) AS Total_Order_Quantity 
-        FROM 
-            factinternetsales fs 
-        JOIN 
-            dimtime t ON fs.OrderDateKey = t.TimeKey 
-        GROUP BY 
-            t.MonthNumberOfYear
-        ORDER BY 
-            t.MonthNumberOfYear;
-    """
+    # # Query SQL Comparison
+    # comparison = """
+    #     SELECT 
+    #         t.MonthNumberOfYear AS Month,
+    #         SUM(fs.OrderQuantity) AS Total_Order_Quantity 
+    #     FROM 
+    #         factinternetsales fs 
+    #     JOIN 
+    #         dimtime t ON fs.OrderDateKey = t.TimeKey 
+    #     GROUP BY 
+    #         t.MonthNumberOfYear
+    #     ORDER BY 
+    #         t.MonthNumberOfYear;
+    # """
     
-    # Eksekusi query
-    cursor.execute(comparison)
+    # # Eksekusi query
+    # cursor.execute(comparison)
     
-    # Mengambil hasil query
-    results = cursor.fetchall()
+    # # Mengambil hasil query
+    # results = cursor.fetchall()
     
-    # Memproses hasil query ke dalam format yang sesuai untuk grafik
-    month = []
-    total_product_by_month = []
-    for row in results:
-        month.append(row[0])  
-        total_product_by_month.append(row[1])     
+    # # Memproses hasil query ke dalam format yang sesuai untuk grafik
+    # month = []
+    # total_product_by_month = []
+    # for row in results:
+    #     month.append(row[0])  
+    #     total_product_by_month.append(row[1])     
     
-    # Plot grafik
-    plt.plot(month, totals, marker='o')
-    plt.xlabel('Month')
-    plt.ylabel('Total Product')
-    plt.title('Total Products by Month')
-    plt.xticks(month)
-    plt.tight_layout()
-    plt.show()
+    # # Plot grafik
+    # plt.plot(month, totals, marker='o')
+    # plt.xlabel('Month')
+    # plt.ylabel('Total Product')
+    # plt.title('Total Products by Month')
+    # plt.xticks(month)
+    # plt.tight_layout()
+    # plt.show()
      
     # Perlu? 1
     col1.subheader('Percobaan')
