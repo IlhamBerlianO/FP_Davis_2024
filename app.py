@@ -71,13 +71,7 @@ def cs_body():
     database = st.secrets["mysql"]["database"]
     
     # Menghubungkan ke database MySQL
-    conn = mysql.connector.connect(
-        user=user,
-        password=password,
-        host=host,
-        port=port,
-        database=database
-    )
+    conn = st.connection("mysql", type='sql')
     
     # # Membuat kursor untuk eksekusi query SQL
     # cursor = conn.cursor()
