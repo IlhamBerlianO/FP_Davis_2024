@@ -2,5 +2,5 @@ streamlit
 mysql-connector-python
 pandas
 matplotlib
-SQLAlchemy==2.0.29
-mysqlclient==2.2.4
+SQLAlchemy
+mysqlclient
