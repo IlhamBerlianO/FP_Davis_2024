@@ -31,6 +31,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+def main():
+    cs_sidebar()
+    cs_body()
+
+    return None
+
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
     encoded = base64.b64encode(img_bytes).decode()
@@ -44,6 +50,8 @@ def cs_sidebar():
     st.sidebar.header('Adventurework Dashboard')
     tahun = list(range(2019, 2025))
     tahun_dipilih = st.sidebar.selectbox("__Pilih tahun__", tahun)
+
+    return None
 
 ##########################
 # Main body of cheat sheet
@@ -130,8 +138,11 @@ def cs_body():
 
     # Connect to data sources
     col3.subheader('Connect to data sources')
-
+    
+    return None
+    
 ##########################
 # Run main()
 ##########################
-
+if __name__ == '__main__':
+    main()
