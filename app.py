@@ -66,19 +66,19 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    user = st.secrets["mysql"]["username"]
-    password = st.secrets["mysql"]["password"]
+    user = st.secrets["username"]
+    password = st.secrets["password"]
     host = st.secrets["mysql"]["host"]
     port = st.secrets["mysql"]["port"]
     database = st.secrets["mysql"]["database"]
-    
+
     # Use pymysql to connect to the database
-    conn = pymysql.connect(
-        host=mysql_host,
-        port=int(mysql_port),
-        user=mysql_user,
-        password=mysql_password,
-        db=mysql_db
+    conn = mysql.connector.connect(
+        host=host,
+        port=int(port),
+        user=user,
+        password=password,
+        db=database
     )
     
     # # Membuat kursor untuk eksekusi query SQL
