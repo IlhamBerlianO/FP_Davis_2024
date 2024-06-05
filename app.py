@@ -64,14 +64,21 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    user = st.secrets["mysql"]["username"]
-    password = st.secrets["mysql"]["password"]
-    host = st.secrets["mysql"]["host"]
-    port = st.secrets["mysql"]["port"]
-    database = st.secrets["mysql"]["database"]
+    # user = st.secrets["mysql"]["username"]
+    # password = st.secrets["mysql"]["password"]
+    # host = st.secrets["mysql"]["host"]
+    # port = st.secrets["mysql"]["port"]
+    # database = st.secrets["mysql"]["database"]
     
     # Menghubungkan ke database MySQL
     conn = st.connection("mysql", type='sql')
+
+    # Perform query.
+    df = conn.query('SELECT * from factinternetsales;', ttl=600)
+    
+    # Print results.
+    for row in df.itertuples():
+        st.write(f"{row.PromotionKey} has a :{row.EnglishPromotionName}:")
     
     # # Membuat kursor untuk eksekusi query SQL
     # cursor = conn.cursor()
