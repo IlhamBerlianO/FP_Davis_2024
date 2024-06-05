@@ -4,7 +4,6 @@ from pathlib import Path
 import base64
 import matplotlib.pyplot as plt
 import pandas as pd
-import pymysql
 
 # user = st.secrets["mysql"]["username"]
 # password = st.secrets["mysql"]["password"]
@@ -67,7 +66,7 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    user = st.secrets["username"]
+    user = st.secrets["mysql"]["username"]
     password = st.secrets["mysql"]["password"]
     host = st.secrets["mysql"]["host"]
     port = st.secrets["mysql"]["port"]
