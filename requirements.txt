@@ -3,4 +3,4 @@ mysql-connector-python
 pandas
 matplotlib
 SQLAlchemy==2.0.29
-mysqlclient
+mysqlclient=2.2.4
