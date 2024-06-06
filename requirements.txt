@@ -1,5 +1,8 @@
 streamlit
-mysql-connector-python
 pandas
 matplotlib
-pymysql
+gcsfs
+st-files-connection
+mysql-connector-python==8.4.0
+mysqlclient
+SQLAlchemy
