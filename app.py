@@ -1,34 +1,40 @@
 import streamlit as st
-import mysql.connector
 from pathlib import Path
 import base64
 import matplotlib.pyplot as plt
 import pandas as pd
+import mysql.connector
+from st_files_connection import FilesConnection
 
-# user = st.secrets["mysql"]["username"]
-# password = st.secrets["mysql"]["password"]
-# host = st.secrets["mysql"]["host"]
-# port = st.secrets["mysql"]["port"]
-# database = st.secrets["mysql"]["database"]
+# # Initialize connection.
+# conn = st.connection('mysql', type='sql')
 
-# # Menghubungkan ke database MySQL
-# conn = mysql.connector.connect(
-#     user=user,
-#     password=password,
-#     host=host,
-#     port=port,
-#     database=database
-# )
+# # Perform query.
+# df = conn.query('SELECT * from mytable;', ttl=600)
 
-# # Menggunakan fungsi untuk mendapatkan koneksi
-# conn = connect_to_database()
+# # Print results.
+# for row in df.itertuples():
+#     st.write(f"{row.name} has a :{row.pet}:")
+# ======================================
+@st.cache_resource
+def init_connections():
+    return mysql.connector.connect(**st.secrets["mydb"])
 
-# Initial page config
-st.set_page_config(
-    page_title='Adventurework Dashboard',
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+conn = init_connections()
+
+@st.cache_data(ttl=600)
+def run_query(query):
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
+
+rows = run_query("SELECT * FROM mytable")
+
+for row in rows:
+    st.write(f"{row[0]} has a: {row[1]}")
+# ======================================
+# conn = st.connection('gcs', type=FilesConnection)
+# df = conn.read("streamlit-bucket-fp/myfile.csv", input_format="csv", ttl=600)
 
 def main():
     cs_sidebar()
@@ -36,16 +42,16 @@ def main():
 
     return None
 
-def img_to_bytes(img_path):
-    img_bytes = Path(img_path).read_bytes()
-    encoded = base64.b64encode(img_bytes).decode()
-    return encoded
+# def img_to_bytes(img_path):
+#     img_bytes = Path(img_path).read_bytes()
+#     encoded = base64.b64encode(img_bytes).decode()
+#     return encoded
     
 ##########################
 # SIDEBAR
 ##########################
 def cs_sidebar():
-    st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
+    # st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("logomark_website.png")), unsafe_allow_html=True)
     st.sidebar.header('Adventurework Dashboard')
     tahun = list(range(2019, 2025))
     tahun_dipilih = st.sidebar.selectbox("__Pilih tahun__", tahun)
@@ -66,61 +72,6 @@ def cs_body():
     col1.subheader('Comparison (Line Chart)')
     col1.markdown('Melihat perkembangan penjualan dari bulan ke bulan.')
 
-    user = st.secrets["username"]
-    password = st.secrets["password"]
-    host = st.secrets["mysql"]["host"]
-    port = st.secrets["mysql"]["port"]
-    database = st.secrets["mysql"]["database"]
-
-    # Use pymysql to connect to the database
-    conn = mysql.connector.connect(
-        host=host,
-        port=int(port),
-        user=user,
-        password=password,
-        db=database
-    )
-    
-    # # Membuat kursor untuk eksekusi query SQL
-    # cursor = conn.cursor()
-    
-    # # Query SQL Comparison
-    # comparison = """
-    #     SELECT 
-    #         t.MonthNumberOfYear AS Month,
-    #         SUM(fs.OrderQuantity) AS Total_Order_Quantity 
-    #     FROM 
-    #         factinternetsales fs 
-    #     JOIN 
-    #         dimtime t ON fs.OrderDateKey = t.TimeKey 
-    #     GROUP BY 
-    #         t.MonthNumberOfYear
-    #     ORDER BY 
-    #         t.MonthNumberOfYear;
-    # """
-    
-    # # Eksekusi query
-    # cursor.execute(comparison)
-    
-    # # Mengambil hasil query
-    # results = cursor.fetchall()
-    
-    # # Memproses hasil query ke dalam format yang sesuai untuk grafik
-    # month = []
-    # total_product_by_month = []
-    # for row in results:
-    #     month.append(row[0])  
-    #     total_product_by_month.append(row[1])     
-    
-    # # Plot grafik
-    # plt.plot(month, totals, marker='o')
-    # plt.xlabel('Month')
-    # plt.ylabel('Total Product')
-    # plt.title('Total Products by Month')
-    # plt.xticks(month)
-    # plt.tight_layout()
-    # plt.show()
-     
     # Perlu? 1
     col1.subheader('Percobaan')
 
