@@ -6,6 +6,7 @@ import pandas as pd
 from gtts import gTTS
 from deep_translator import GoogleTranslator
 import io
+import seaborn as sns
 
 # Initial page config
 st.set_page_config(
