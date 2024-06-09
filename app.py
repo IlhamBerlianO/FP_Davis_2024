@@ -35,7 +35,7 @@ def cs_sidebar():
     st.sidebar.header('Dashboard')
 
     st.sidebar.markdown('__Pilih Data__')
-    a = st.sidebar.radio(\'Pilih:\',[1,2])
+    a = st.sidebar.radio('Pilih:',[Adveturework Database,Scrapping IMDB])
 
     st.sidebar.markdown('__Magic commands__')
     st.sidebar.code('''
