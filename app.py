@@ -64,8 +64,6 @@ def cs_body(data_dipilih):
     elif data_dipilih == "Scrapping IMDB":
         # Judul aplikasi
         st.title("Scrapping IMDB")
-        st.write("Ini adalah contoh konten yang akan ditampilkan jika Database Dump_AW dipilih.")
-        
         # Deskripsi
         st.write(f'Visualisasi data film dengan menggunakan data dari www.imdb.com')
         
@@ -91,7 +89,7 @@ def cs_body(data_dipilih):
         st.pyplot(plt)
         
         # Judul aplikasi
-        st.title('Nama Film')
+        st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)
         
         # Pilih saham dari dropdown
         selected_stock = st.selectbox('Pilih Film:', title)
