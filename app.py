@@ -338,39 +338,7 @@ def cs_body(data_dipilih):
         
           # Membaca file excel
           baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
-        
-          # Ambil data film
-          title = baca['Title'].tolist()
-          gross = baca['Gross_us'].tolist()
-          summary = baca['Summary'].tolist()
-          image = baca['Image'].tolist()
-          rating = baca['Rating'].tolist()
-          genre = baca['Genre'].tolist()
-          runtime = baca['Runtime'].tolist()
-        
-          st.subheader("Film Ratings")
-          fig, ax = plt.subplots()
-          sns.barplot(data=baca, x='Rating', y='Title', ax=ax, palette="viridis")
-          st.pyplot(fig)
-
-          # Pie chart untuk distribusi genre
-          st.subheader("Genre Distribution")
-          genre_counts = baca['Genre'].str.split(', ').explode().value_counts()
-          fig, ax = plt.subplots()
-          ax.pie(genre_counts, labels=genre_counts.index, autopct='%1.1f%%', startangle=90, colors=sns.color_palette("viridis", len(genre_counts)))
-          ax.axis('equal')
-          st.pyplot(fig)
-          
-          # Line chart untuk pendapatan kotor berdasarkan tanggal rilis
-          st.subheader("Gross Revenue Over Time")
-          baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
-          sorted_data = baca.sort_values(by='Opening_week_date')
-          fig, ax = plt.subplots()
-          sns.lineplot(data=sorted_data, x='Opening_week_date', y='Gross_us', ax=ax, marker='o')
-          ax.set_title('Gross Revenue Over Time')
-          ax.set_xlabel('Release Date')
-          ax.set_ylabel('Gross Revenue (US)')
-          st.pyplot(fig)
+          st.table(data.iloc[0:10])
         
           # Judul aplikasi
           st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)
