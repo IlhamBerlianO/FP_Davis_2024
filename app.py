@@ -102,9 +102,9 @@ def cs_body(data_dipilih):
         # Tampilkan detail perusahaan yang dipilih
         st.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid'>](https://streamlit.io/)'''.format(img_to_bytes(f"gambar/{image[index]}")), unsafe_allow_html=True)
         st.write(f'Judul Film: {title[index]}')
-        st.write(f'Rating: ${rating[index]}')
-        st.write(f'Genre: ${genre[index]}')
-        st.write(f'Waktu: ${runtime[index]} Menit')
+        st.write(f'Rating: {rating[index]}/10')
+        st.write(f'Genre: {genre[index]}')
+        st.write(f'Waktu: {runtime[index]} Menit')
         st.write(f'Penjelasan Singkat:')
         
         # Inisialisasi objek Translator
@@ -129,9 +129,6 @@ def cs_body(data_dipilih):
         if st.button("Baca Deskripsi"):
             speech_bytes = text_to_speech(summary[index])
             st.audio(speech_bytes, format='audio/mp3')
-        
-        st.write(f'Created by Ilham Berlian Oktavio')
-
     else:
         st.write("Data yang dipilih tidak tersedia")
         
