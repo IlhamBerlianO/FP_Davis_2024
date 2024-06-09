@@ -32,7 +32,7 @@ def img_to_bytes(img_path):
 def cs_sidebar():
 
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
-    st.sidebar.header('('Dashboard')
+    st.sidebar.header('Dashboard')
 
     st.sidebar.markdown('__Pilih Data__')
     a = st.sidebar.radio(\'Pilih:\',[Adventurework Database, Scrapping IMDB])
