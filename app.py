@@ -3,6 +3,10 @@ from pathlib import Path
 import base64
 import matplotlib.pyplot as plt
 import pandas as pd
+from gtts import gTTS
+from deep_translator import GoogleTranslator
+import io
+import base64
 
 def main():
     data_dipilih = cs_sidebar()
