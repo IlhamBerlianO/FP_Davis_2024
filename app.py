@@ -7,6 +7,7 @@ from gtts import gTTS
 from deep_translator import GoogleTranslator
 import io
 import seaborn as sns
+import altair as alt
 
 # Initial page config
 st.set_page_config(
@@ -332,13 +333,78 @@ def cs_body(data_dipilih):
          
      elif data_dipilih == "Scrapping IMDB":
           # Judul aplikasi
-          st.title("Scrapping IMDB")
-          # Deskripsi
-          st.write(f'Visualisasi data film dengan menggunakan data dari www.imdb.com')
-        
+          st.markdown("""
+               <h1 style='text-align: center;'>Scrapping IMDB</h1>
+          """, unsafe_allow_html=True)
+          st.markdown('''<hr>''', unsafe_allow_html=True)
+
+          # Deskripsikan col
+          col1, col2, col3 = st.columns([.9, 1.8, 1])
+
           # Membaca file excel
           baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
-          st.table(baca.iloc[0:10])
+          # Ambil data film
+          title = baca['Title'].tolist()
+          gross = baca['Gross_us'].tolist()
+          summary = baca['Summary'].tolist()
+          image = baca['Image'].tolist()
+          rating = baca['Rating'].tolist()
+          genre = baca['Genre'].tolist()
+          runtime = baca['Runtime'].tolist()
+
+          # Menampilkan konten 
+          with col1:
+               sorted_data = baca.sort_values(by='Budget', ascending=False)
+               top_film = sorted_data.iloc[0]
+               low_film = sorted_data.iloc[-1]
+
+               budget_delta = top_film['Budget'] - low_film['Budget']
+
+               st.subheader("Top/Low Budget")
+
+               st.metric(label=f"{top_film['Title']}", value=f"${top_film['Budget']:,.2f}", delta=f"${budget_delta:,.2f}")
+               st.metric(label=f"{low_film['Title']}", value=f"${low_film['Budget']:,.2f}", delta=f"-${budget_delta:,.2f}")
+               
+               with st.expander('About', expanded=True):
+                    st.write('''
+                         - Data: [Web IMDB](www.imdb.com).
+                         - :orange[**Top/Low Budget**]: Films that have the highest and lowest budgets.
+                         - :orange[**Top 5 Films**]: 5 highest grossing films.
+                         - :orange[**Top Rating**]: The order of films is based on ratings in order from highest to lowest.
+                    ''')
+          with col2:
+               st.subheader("Top 5 Films")
+
+               top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
+
+               chart = alt.Chart(top5_grossing_films).mark_bar().encode(
+                    x='Gross_us:Q',
+                    y=alt.Y('Title:N', sort='-x'),
+                    tooltip=['Title', 'Gross_us']
+               ).configure_axis(
+                    grid=False
+               ).interactive()
+
+               st.altair_chart(chart, use_container_width=True)
+                              
+          with col3:
+               st.subheader('Top Rating')
+               data_top_rating = baca[['Title', 'Rating']]
+               data_top_rating = data_top_rating.sort_values(by='Rating', ascending=False)
+               st.dataframe(
+                    data_top_rating,
+                    column_config={
+                         "Rating": st.column_config.ProgressColumn(
+                              "Rating",
+                              format="%f",
+                              min_value=0,
+                              max_value=10
+                         )
+                    },
+                    hide_index=True
+               )
+          
+          st.markdown('''<hr>''', unsafe_allow_html=True)
         
           # Judul aplikasi
           st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)

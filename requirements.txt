@@ -5,3 +5,4 @@ openpyxl
 gtts
 deep_translator 
 seaborn
+altair
