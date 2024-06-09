@@ -338,7 +338,7 @@ def cs_body(data_dipilih):
         
           # Membaca file excel
           baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
-          st.table(data.iloc[0:10])
+          st.table(baca.iloc[0:10])
         
           # Judul aplikasi
           st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)
