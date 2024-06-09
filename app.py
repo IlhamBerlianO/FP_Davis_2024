@@ -331,86 +331,117 @@ def cs_body(data_dipilih):
           ''')
          
      elif data_dipilih == "Scrapping IMDB":
-          # Judul aplikasi
-          st.title("Scrapping IMDB")
-          # Deskripsi
-          st.write(f'Visualisasi data film dengan menggunakan data dari www.imdb.com')
-        
-          # Membaca file excel
-          baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
-        
-          # Ambil data film
-          title = baca['Title'].tolist()
-          gross = baca['Gross_us'].tolist()
-          summary = baca['Summary'].tolist()
-          image = baca['Image'].tolist()
-          rating = baca['Rating'].tolist()
-          genre = baca['Genre'].tolist()
-          runtime = baca['Runtime'].tolist()
-        
-          st.subheader("Film Ratings")
-          fig, ax = plt.subplots()
-          sns.barplot(data=baca, x='Rating', y='Title', ax=ax, palette="viridis")
-          st.pyplot(fig)
+          states = pd.read_csv("states.csv")
+          migration = pd.read_csv("migration.csv")
+          population = pd.read_csv("population.csv")
 
-          # Pie chart untuk distribusi genre
-          st.subheader("Genre Distribution")
-          genre_counts = baca['Genre'].str.split(', ').explode().value_counts()
-          fig, ax = plt.subplots()
-          ax.pie(genre_counts, labels=genre_counts.index, autopct='%1.1f%%', startangle=90, colors=sns.color_palette("viridis", len(genre_counts)))
-          ax.axis('equal')
-          st.pyplot(fig)
+          # ------------------------------------------------------------------------------
+          # Create gains/losses section
+          st.title("US Population Dynamics")
+          st.markdown("---")
           
-          # Line chart untuk pendapatan kotor berdasarkan tanggal rilis
-          st.subheader("Gross Revenue Over Time")
-          baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
-          sorted_data = baca.sort_values(by='Opening_week_date')
-          fig, ax = plt.subplots()
-          sns.lineplot(data=sorted_data, x='Opening_week_date', y='Gross_us', ax=ax, marker='o')
-          ax.set_title('Gross Revenue Over Time')
-          ax.set_xlabel('Release Date')
-          ax.set_ylabel('Gross Revenue (US)')
-          st.pyplot(fig)
-        
-          # Judul aplikasi
-          st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)
-        
-          # Pilih saham dari dropdown
-          selected_stock = st.selectbox('Pilih Film:', title)
-        
-          # Temukan indeks saham yang dipilih di daftar perusahaan
-          index = title.index(selected_stock)
-        
-          # Tampilkan detail perusahaan yang dipilih
-          st.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid'>](https://streamlit.io/)'''.format(img_to_bytes(f"gambar/{image[index]}")), unsafe_allow_html=True)
-          st.write(f'Judul Film: {title[index]}')
-          st.write(f'Rating: {rating[index]}/10')
-          st.write(f'Genre: {genre[index]}')
-          st.write(f'Waktu: {runtime[index]} Menit')
-          st.write(f'Penjelasan Singkat:')
-        
-          # Inisialisasi objek Translator
-          translator = GoogleTranslator(source='en', target='id')
-        
-          # Tambahkan tombol untuk membaca deskripsi perusahaan
-          if st.button("Translate ke Indonesia"):
-               # Translate deskripsi dari bahasa Inggris ke bahasa Indonesia
-               summary_id = translator.translate(summary[index])
-               summary[index] = summary_id
-        
-          st.write(summary[index])
-        
-          # Fungsi untuk merubah teks deskripsi menjadi suara
-          def text_to_speech(text):
-               tts = gTTS(text=text, lang='en')  # Menggunakan gTTS untuk mengonversi teks ke suara dalam bahasa Inggris
-               speech = io.BytesIO()
-               tts.write_to_fp(speech)
-               return speech.getvalue()
-        
-          # Tambahkan tombol untuk membaca deskripsi perusahaan
-          if st.button("Baca Deskripsi"):
-               speech_bytes = text_to_speech(summary[index])
-               st.audio(speech_bytes, format='audio/mp3')
+          col1, col2 = st.columns([1,1])
+          
+          with col1:
+              st.header("Gains/Losses")
+          
+              texas_gain = states[states["State"] == "Texas"]["Gain/Loss"].values[0]
+              ny_loss = states[states["State"] == "New York"]["Gain/Loss"].values[0]
+          
+              st.metric(
+                  "Texas",
+                  f"{texas_gain}M",
+                  f"{texas_gain:,.0f} K",
+                  delta_color="inverse",
+              )
+              st.metric(
+                  "New York",
+                  f"{ny_loss}M",
+                  f"{ny_loss:,.0f} K",
+                  delta_color="inverse",
+              )
+          
+          
+          # ------------------------------------------------------------------------------
+          # Create total population section
+          with col2:
+              st.header("Total Population")
+          
+              us_map = alt.Chart(population).mark_geoshape(
+                  stroke="black",
+                  strokeOpacity=0.5,
+                  fillOpacity=0.8
+              ).encode(
+                  color=alt.Color("Population",
+                      scale=alt.Scale(scheme="lightblue", domain=[0, 40000000]),
+                      legend=alt.Legend(title="Population")
+                  )
+              ).project(
+                  type="albersUsa"
+              ).properties(
+                  width=500,
+                  height=300
+              )
+          
+              st.altair_chart(us_map, use_container_width=True)
+          
+          # ------------------------------------------------------------------------------
+          # Create top states section
+          st.markdown("---")
+          
+          st.header("Top States")
+          
+          top_states = population.sort_values(by="Population", ascending=False)
+          top_states = top_states.head(10)
+          st.dataframe(top_states)
+          
+          # ------------------------------------------------------------------------------
+          # Create migration section
+          st.markdown("---")
+          
+          st.header("States Migration")
+          
+          col3, col4 = st.columns([1, 3])
+          
+          with col3:
+              inbound_perc = migration["Inbound %"].values[0]
+              outbound_perc = migration["Outbound %"].values[0]
+          
+              st.subheader("Inbound")
+              st.metric(
+                  "",
+                  f"{inbound_perc}%",
+                  delta_color="inverse",
+              )
+              st.subheader("Outbound")
+              st.metric(
+                  "",
+                  f"{outbound_perc}%",
+                  delta_color="inverse",
+              )
+          
+          with col4:
+              migration_heat = alt.Chart(migration).mark_rect().encode(
+                  alt.X("State:N", sort=None),
+                  alt.Y("Year:N", sort=None),
+                  alt.Color("Migration:Q", scale=alt.Scale(scheme="lightblue"), legend=alt.Legend(title="Migration")),
+                  alt.Tooltip(["State", "Year", "Migration"]),
+              ).properties(
+                  width=800,
+                  height=300
+              )
+          
+              st.altair_chart(migration_heat, use_container_width=True)
+          
+          # ------------------------------------------------------------------------------
+          # Create about section
+          st.markdown("---")
+          st.subheader("About")
+          st.markdown("""
+          - **Data:** [U.S. Census Bureau](https://www.census.gov/).
+          - **Gains/Losses:** states with high inbound/outbound migration for selected year.
+          - **States Migration:** percentage of states with annual inbound/outbound migration > 50,000.
+          """)
      else:
           st.write("Data yang dipilih tidak tersedia")
 
