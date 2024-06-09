@@ -17,55 +17,24 @@ st.set_page_config(
 def main():
     cs_sidebar()
     cs_body()
-
     return None
-
-# Thanks to streamlitopedia for the following code snippet
 
 def img_to_bytes(img_path):
     img_bytes = Path(img_path).read_bytes()
     encoded = base64.b64encode(img_bytes).decode()
     return encoded
 
-# sidebar
-
+# Sidebar
 def cs_sidebar():
-
     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
     st.sidebar.header('Dashboard')
 
-    st.sidebar.markdown('__Pilih Data__')
-    a = st.sidebar.radio('Pilih:',[1,2])
-
-    st.sidebar.markdown('__Magic commands__')
-    st.sidebar.code('''
-'_This_ is some __Markdown__'
-a=3
-'dataframe:', data
-''')
-
-    st.sidebar.markdown('__Command line__')
-    st.sidebar.code('''
-$ streamlit --help
-$ streamlit run your_script.py
-$ streamlit hello
-$ streamlit config show
-$ streamlit cache clear
-$ streamlit docs
-$ streamlit --version
-    ''')
-
-    st.sidebar.markdown('__Pre-release features__')
-    st.sidebar.code('''
-pip uninstall streamlit
-pip install streamlit-nightly --upgrade
-    ''')
-    st.sidebar.markdown('<small>Learn more about [experimental features](https://docs.streamlit.io/library/advanced-features/prerelease#beta-and-experimental-features)</small>', unsafe_allow_html=True)
+    data = ["Database Dump_AW", "Scrapping IMDB"]
+    data_dipilih = st.sidebar.selectbox("__Pilih data__", data)
 
     st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
-    st.sidebar.markdown('''<small>[Cheat sheet v1.25.0](https://github.com/daniellewisDL/streamlit-cheat-sheet)  | Aug 2023 | [Daniel Lewis](https://daniellewisdl.github.io/)</small>''', unsafe_allow_html=True)
-
-    return None
+    st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 2024 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
+    return data_dipilih
 
 ##########################
 # Main body of cheat sheet
