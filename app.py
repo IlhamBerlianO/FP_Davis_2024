@@ -15,26 +15,26 @@ st.set_page_config(
 )
 
 def main():
-    cs_sidebar()
-    cs_body()
-    return None
+     data_dipilih = cs_sidebar()
+     cs_body((data_dipilih))
+     return None
 
 def img_to_bytes(img_path):
-    img_bytes = Path(img_path).read_bytes()
-    encoded = base64.b64encode(img_bytes).decode()
-    return encoded
+     img_bytes = Path(img_path).read_bytes()
+     encoded = base64.b64encode(img_bytes).decode()
+     return encoded
 
 # Sidebar
 def cs_sidebar():
-    st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
-    st.sidebar.header('Dashboard')
+     st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
+     st.sidebar.header('Dashboard')
 
-    data = ["Database Dump_AW", "Scrapping IMDB"]
-    data_dipilih = st.sidebar.selectbox("__Pilih data__", data)
+     data = ["Database Dump_AW", "Scrapping IMDB"]
+     data_dipilih = st.sidebar.selectbox("__Pilih data__", data)
 
-    st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
-    st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 2024 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
-    return data_dipilih
+     st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
+     st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 2024 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
+     return data_dipilih
 
 ##########################
 # Main body of cheat sheet
