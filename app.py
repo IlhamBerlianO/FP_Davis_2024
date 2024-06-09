@@ -79,7 +79,7 @@ def cs_body(data_dipilih):
         image = baca['Image'].tolist()
         rating = baca['Rating'].tolist()
         genre = baca['Genre'].tolist()
-        runtime = baca['runtime'].tolist()
+        runtime = baca['Runtime'].tolist()
         
         # # Plot grafik
         plt.figure(figsize=(10, 6))
