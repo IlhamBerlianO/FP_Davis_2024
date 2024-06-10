@@ -8,6 +8,11 @@ from deep_translator import GoogleTranslator
 import io
 import seaborn as sns
 import altair as alt
+import os
+import mysql.connector
+from mysql.connector import Error
+from streamlit_lightweight_charts import renderLightweightCharts
+import streamlit_lightweight_charts.dataSamples as data
 
 # Initial page config
 st.set_page_config(
@@ -31,11 +36,20 @@ def cs_sidebar():
      st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
      st.sidebar.header('Dashboard')
 
-     data = ["Database Dump_AW", "Scrapping IMDB"]
-     data_dipilih = st.sidebar.selectbox("__Pilih data__", data)
+     data_dipilih = st.sidebar.selectbox("__Pilih data__", ["Database Dump_AW", "Scrapping IMDB"])
+
+     # Logika untuk mengubah sidebar berdasarkan pilihan dropdown
+     if data_dipilih == "Database Dump_AW":
+          st.sidebar.subheader("Sidebar berubah untuk Database Dump_AW")
+          filter_scrapping = st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
+     elif data_dipilih == "Scrapping IMDB":
+          st.sidebar.subheader("Filter:")
+          filter_scrapping = st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
+          filter_scrapping_2 = st.sidebar.selectbox("Color", ["Filter D", "Filter E", "Filter F"])
+          filtro3 = st.sidebar.slider("Rating", 0.0, 10.0)
 
      st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
-     st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 2024 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
+     st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 21082010034 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
      return data_dipilih
 
 ##########################
@@ -43,6 +57,25 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
+          # Function to create a connection to the database
+          def create_connection():
+               try:
+                    connection = mysql.connector.connect(
+                         host="kubela.id",
+                         user="davis2024irwan",
+                         passwd="wh451n9m@ch1n3",
+                         port=3306,  
+                         database="aw"
+                    )
+                    if connection.is_connected():
+                         st.write("Connection to database was successful")
+                         return connection
+               except Error as e:
+                    print(f"Error: '{e}'")
+                    return None
+          
+          connection = create_connection()
+
           col1, col2, col3 = st.columns(3)
      
           #######################################
@@ -351,6 +384,15 @@ def cs_body(data_dipilih):
           rating = baca['Rating'].tolist()
           genre = baca['Genre'].tolist()
           runtime = baca['Runtime'].tolist()
+          # Ganti nilai "-" dengan tanggal default (misal: 1 Januari 1900)
+          default_date = pd.to_datetime('1900-01-01')
+          baca['Opening_week_date'] = baca['Opening_week_date'].replace('-', default_date)
+          # Ambil tahun dari kolom Opening_week_date
+          baca['Year'] = pd.to_datetime(baca['Opening_week_date'], errors='coerce').dt.year
+          # Hilangkan baris dengan nilai yang tidak valid
+          baca = baca.dropna(subset=['Year'])
+          # Hitung jumlah film berdasarkan tahun
+          jumlah_film_per_tahun = baca['Year'].value_counts().sort_index()
 
           # Menampilkan konten 
           with col1:
@@ -368,15 +410,16 @@ def cs_body(data_dipilih):
                with st.expander('About', expanded=True):
                     st.write('''
                          - Data: [Web IMDB](www.imdb.com).
-                         - :orange[**Top/Low Budget**]: Films that have the highest and lowest budgets.
-                         - :orange[**Top 5 Films**]: 5 highest grossing films.
-                         - :orange[**Top Rating**]: The order of films is based on ratings in order from highest to lowest.
+                         - :orange[**Top/Low Budget**]: Movies that have the highest and lowest budgets.
+                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
+                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
                     ''')
+
           with col2:
-               st.subheader("Top 5 Films")
-
+               st.subheader("Top 5 Movies")
+               
                top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
-
+               
                chart = alt.Chart(top5_grossing_films).mark_bar().encode(
                     x='Gross_us:Q',
                     y=alt.Y('Title:N', sort='-x'),
@@ -386,7 +429,41 @@ def cs_body(data_dipilih):
                ).interactive()
 
                st.altair_chart(chart, use_container_width=True)
-                              
+
+               st.subheader("Number of Films Released per Year")
+
+               chartOptions = {
+                    "layout": {
+                         "textColor": 'white',
+                         "background": {
+                              "type": 'solid',
+                              "color": 'rgb(14, 17, 23)'
+                         }
+                    },
+                    "grid": {
+                         "vertLines": {
+                              "color": 'rgba(42, 46, 57, 0.1)',
+                              "visible": 'false'
+                         },
+                         "horzLines": {
+                              "color": 'rgba(42, 46, 57, 0.1)', 
+                              "visible": 'false'
+                         }
+                    }
+               }
+
+               # Tampilkan grafik area berdasarkan jumlah film per tahun
+               renderLightweightCharts([
+               {
+                    "chart": chartOptions,
+                    "series": [{
+                         "type": 'Area',
+                         "data": jumlah_film_per_tahun.tolist(),
+                         "options": {}
+                    }],
+               }
+               ], 'area')
+
           with col3:
                st.subheader('Top Rating')
                data_top_rating = baca[['Title', 'Rating']]
@@ -407,8 +484,30 @@ def cs_body(data_dipilih):
           st.markdown('''<hr>''', unsafe_allow_html=True)
         
           # Judul aplikasi
-          st.markdown("<h1 class='centered'>Top Picks</h1>", unsafe_allow_html=True)
+          st.markdown("<h1 class='centered'>Movie List</h1>", unsafe_allow_html=True)
         
+          # Folder gambar
+          image_folder = "gambar"
+
+          cols = st.columns(6)
+          num_cols = 6
+
+          for i in range(len(title)):
+               with cols[i % num_cols]:
+                    image_path = os.path.join(image_folder, image[i])
+                    if os.path.exists(image_path):
+                         st.image(image_path, use_column_width=True)
+                    else:
+                         st.markdown("![Image not available](https://via.placeholder.com/150)")
+                    st.markdown(title[i])
+                    st.markdown(rating[i])
+                    st.button("Detail", key=f"button_{i}")
+                    
+          # Menambahkan elemen kosong jika jumlah film tidak mengisi seluruh kolom pada baris terakhir
+          if len(title) % num_cols != 0:
+               for _ in range(num_cols - len(title) % num_cols):
+                    st.empty()
+
           # Pilih saham dari dropdown
           selected_stock = st.selectbox('Pilih Film:', title)
         
