@@ -1,10 +1,8 @@
 streamlit
-pathlib
 matplotlib
 pandas
 gtts
 deep_translator
-io
 seaborn
 altair
 mysql-connector-python
