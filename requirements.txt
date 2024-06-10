@@ -1,8 +1,12 @@
 streamlit
-pandas
+pathlib
+base64
 matplotlib
-openpyxl
+pandas
 gtts
-deep_translator 
+deep_translator
+io
 seaborn
 altair
+mysql-connector-python
+streamlit-lightweight-charts

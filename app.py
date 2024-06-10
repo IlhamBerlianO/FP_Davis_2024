@@ -12,7 +12,6 @@ import os
 import mysql.connector
 from mysql.connector import Error
 from streamlit_lightweight_charts import renderLightweightCharts
-import streamlit_lightweight_charts.dataSamples as data
 
 # Initial page config
 st.set_page_config(
