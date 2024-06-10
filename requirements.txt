@@ -1,6 +1,5 @@
 streamlit
 pathlib
-base64
 matplotlib
 pandas
 gtts
@@ -8,5 +7,5 @@ deep_translator
 io
 seaborn
 altair
-mysql-connector
+mysql-connector-python
 streamlit-lightweight-charts
