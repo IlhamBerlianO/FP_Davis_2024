@@ -6,12 +6,12 @@ import pandas as pd
 from gtts import gTTS
 from deep_translator import GoogleTranslator
 import io
-import seaborn as sns
 import altair as alt
 import os
 import mysql.connector
 from mysql.connector import Error
 from streamlit_lightweight_charts import renderLightweightCharts
+import plotly.express as px
 
 # Initial page config
 st.set_page_config(
@@ -34,21 +34,8 @@ def img_to_bytes(img_path):
 def cs_sidebar():
      st.sidebar.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid' width=32 height=32>](https://streamlit.io/)'''.format(img_to_bytes("gambar/logomark_website.png")), unsafe_allow_html=True)
      st.sidebar.header('Dashboard')
-
      data_dipilih = st.sidebar.selectbox("__Pilih data__", ["Database Dump_AW", "Scrapping IMDB"])
-
-     # Logika untuk mengubah sidebar berdasarkan pilihan dropdown
-     if data_dipilih == "Database Dump_AW":
-          st.sidebar.subheader("Sidebar berubah untuk Database Dump_AW")
-          filter_scrapping = st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
-     elif data_dipilih == "Scrapping IMDB":
-          st.sidebar.subheader("Filter:")
-          filter_scrapping = st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
-          filter_scrapping_2 = st.sidebar.selectbox("Color", ["Filter D", "Filter E", "Filter F"])
-          filtro3 = st.sidebar.slider("Rating", 0.0, 10.0)
-
      st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
-     st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 21082010034 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
      return data_dipilih
 
 ##########################
@@ -74,6 +61,11 @@ def cs_body(data_dipilih):
                     return None
           
           connection = create_connection()
+
+          st.sidebar.subheader("Sidebar berubah untuk Database Dump_AW")
+          filter_database_1= st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
+          st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
+          st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 21082010034 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
 
           col1, col2, col3 = st.columns(3)
      
@@ -364,15 +356,6 @@ def cs_body(data_dipilih):
           ''')
          
      elif data_dipilih == "Scrapping IMDB":
-          # Judul aplikasi
-          st.markdown("""
-               <h1 style='text-align: center;'>Scrapping IMDB</h1>
-          """, unsafe_allow_html=True)
-          st.markdown('''<hr>''', unsafe_allow_html=True)
-
-          # Deskripsikan col
-          col1, col2, col3 = st.columns([.9, 1.8, 1])
-
           # Membaca file excel
           baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
           # Ambil data film
@@ -381,45 +364,89 @@ def cs_body(data_dipilih):
           summary = baca['Summary'].tolist()
           image = baca['Image'].tolist()
           rating = baca['Rating'].tolist()
-          genre = baca['Genre'].tolist()
           runtime = baca['Runtime'].tolist()
-          # Ganti nilai "-" dengan tanggal default (misal: 1 Januari 1900)
-          default_date = pd.to_datetime('1900-01-01')
-          baca['Opening_week_date'] = baca['Opening_week_date'].replace('-', default_date)
-          # Ambil tahun dari kolom Opening_week_date
-          baca['Year'] = pd.to_datetime(baca['Opening_week_date'], errors='coerce').dt.year
-          # Hilangkan baris dengan nilai yang tidak valid
-          baca = baca.dropna(subset=['Year'])
-          # Hitung jumlah film berdasarkan tahun
-          jumlah_film_per_tahun = baca['Year'].value_counts().sort_index()
+
+          # Untuk Filter Color
+          color = baca['Color'].tolist()
+          unique_colors = baca['Color'].unique()
+
+          # Untuk Filter Genre
+          data_genres = baca['Genre'].dropna().tolist()
+          unique_genres = set(genre.strip() for sublist in baca['Genre'].dropna().str.split(',') for genre in sublist)
+
+          # Untuk Grafik Total Movies by Genre
+          split_genres = [genre.strip() for genres in data_genres for genre in genres.split(',')]
+          value_unique_genres = pd.Series(split_genres).value_counts()
+
+          st.sidebar.subheader("Filter:")
+          filter_scrapping_1 = st.sidebar.multiselect('Select genres', unique_genres)
+          filter_scrapping_2 = st.sidebar.multiselect('Select Color', unique_colors)         
+          filter_scrapping_3 = st.sidebar.slider("Rating", 0.0, 10.0)
+          # Filter the data based on the selected filters
+          if not filter_scrapping_1 and not filter_scrapping_2:
+               filtered_data = baca[baca['Rating'] >= filter_scrapping_3]
+          elif not filter_scrapping_1:
+               filtered_data = baca[(baca['Color'].isin(filter_scrapping_2)) & (baca['Rating'] >= filter_scrapping_3)]
+          elif not filter_scrapping_2:
+               filtered_data = baca[(baca['Genre'].str.contains('|'.join(filter_scrapping_1))) & (baca['Rating'] >= filter_scrapping_3)]
+          else:
+               filtered_data = baca[(baca['Genre'].str.contains('|'.join(filter_scrapping_1))) & (baca['Color'].isin(filter_scrapping_2)) & (baca['Rating'] >= filter_scrapping_3)]
+
+          if not filter_scrapping_1 and not filter_scrapping_2 and filter_scrapping_3 == 0.0:
+               filtered_data = baca
+
+          
+          st.sidebar.markdown('''<hr>''', unsafe_allow_html=True)
+          st.sidebar.markdown('''<small>[FP_Davis_2024](https://github.com/IlhamBerlianO/FP_Davis_2024)  | 21082010034 | [Ilham Berlian O](https://github.com/IlhamBerlianO/)</small>''', unsafe_allow_html=True)
+
+          # Judul aplikasi
+          st.markdown("""
+               <h1 style='text-align: center;'>Visualization IMDB</h1>
+          """, unsafe_allow_html=True)
+
+          # Deskripsikan col
+          col1, col2, col3 = st.columns([.9, 1.8, 1])
 
           # Menampilkan konten 
           with col1:
-               sorted_data = baca.sort_values(by='Budget', ascending=False)
-               top_film = sorted_data.iloc[0]
-               low_film = sorted_data.iloc[-1]
+               # First Week Gross Revenue
+               fig = px.scatter(baca, 
+                    x='Title', 
+                    y='Opening_week_rev', 
+                    size='Opening_week_rev', 
+                    hover_data=['Title', 'Opening_week_rev'],
+                    title='Film Gross Revenue',
+                    labels={'Title': 'Title', 'Opening_week_rev': 'Opening week rev'},
+                    size_max=40)
 
-               budget_delta = top_film['Budget'] - low_film['Budget']
+               fig.update_layout(
+                    title={'text': 'First Week Gross Revenue', 'font_size': 25, 'font_family': 'Arial'},
+                    xaxis=dict(showgrid=False, showticklabels=False, title=''),
+                    yaxis=dict(showgrid=True, title=''), 
+                    showlegend=False,
+                    margin=dict(b=0)
+               )
 
-               st.subheader("Top/Low Budget")
+               st.plotly_chart(fig, use_container_width=True)
 
-               st.metric(label=f"{top_film['Title']}", value=f"${top_film['Budget']:,.2f}", delta=f"${budget_delta:,.2f}")
-               st.metric(label=f"{low_film['Title']}", value=f"${low_film['Budget']:,.2f}", delta=f"-${budget_delta:,.2f}")
-               
-               with st.expander('About', expanded=True):
-                    st.write('''
-                         - Data: [Web IMDB](www.imdb.com).
-                         - :orange[**Top/Low Budget**]: Movies that have the highest and lowest budgets.
-                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
-                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
-                    ''')
+               # Total Movies by Genre
+               df_plotly = pd.DataFrame({'genre': value_unique_genres.index, 'total_movies': value_unique_genres.values})
+
+               fig = px.pie(df_plotly, values='total_movies', names='genre')
+               fig.update_layout(
+                    title={'text': 'Total Movies by Genre', 'font_size': 25, 'font_family': 'Arial'},
+                    margin=dict(b=90, t=50, r=10, l=0)
+               )
+
+               st.plotly_chart(fig,use_container_width=True)
 
           with col2:
+               # Top 5 Movies
                st.subheader("Top 5 Movies")
                
                top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
                
-               chart = alt.Chart(top5_grossing_films).mark_bar().encode(
+               chart1 = alt.Chart(top5_grossing_films).mark_bar().encode(
                     x='Gross_us:Q',
                     y=alt.Y('Title:N', sort='-x'),
                     tooltip=['Title', 'Gross_us']
@@ -427,43 +454,36 @@ def cs_body(data_dipilih):
                     grid=False
                ).interactive()
 
-               st.altair_chart(chart, use_container_width=True)
+               st.altair_chart(chart1, use_container_width=True)
 
-               st.subheader("Number of Films Released per Year")
-
-               chartOptions = {
-                    "layout": {
-                         "textColor": 'white',
-                         "background": {
-                              "type": 'solid',
-                              "color": 'rgb(14, 17, 23)'
-                         }
-                    },
-                    "grid": {
-                         "vertLines": {
-                              "color": 'rgba(42, 46, 57, 0.1)',
-                              "visible": 'false'
-                         },
-                         "horzLines": {
-                              "color": 'rgba(42, 46, 57, 0.1)', 
-                              "visible": 'false'
-                         }
-                    }
-               }
-
-               # Tampilkan grafik area berdasarkan jumlah film per tahun
-               renderLightweightCharts([
-               {
-                    "chart": chartOptions,
-                    "series": [{
-                         "type": 'Area',
-                         "data": jumlah_film_per_tahun.tolist(),
-                         "options": {}
-                    }],
-               }
-               ], 'area')
+               # Total Movies by Year
+               baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
+               baca['Year'] = baca['Opening_week_date'].dt.year
+               film_per_year = baca.groupby('Year').size().reset_index(name='Total_Film')
+               fig = px.line(film_per_year, x='Year', y='Total_Film', markers=True)
+               fig.update_layout(
+                    title={'text': 'Total Movies by Year', 'font_size': 25, 'font_family': 'Arial'},
+                    xaxis_title='',
+                    yaxis_title=''
+               )
+               st.plotly_chart(fig, use_container_width=True)
 
           with col3:
+               # High/Low Budget
+               sorted_data = baca.sort_values(by='Budget', ascending=False)
+               top_film = sorted_data.iloc[0]
+               low_film = sorted_data.iloc[-1]
+
+               budget_delta = top_film['Budget'] - low_film['Budget']
+
+               st.subheader("High/Low Budget")
+
+               st.metric(label=f"{top_film['Title']}", value=f"${top_film['Budget']:,.2f}", delta=f"${budget_delta:,.2f}")
+               st.metric(label=f"{low_film['Title']}", value=f"${low_film['Budget']:,.2f}", delta=f"-${budget_delta:,.2f}")
+
+               st.write('')
+               
+               # Top Rating
                st.subheader('Top Rating')
                data_top_rating = baca[['Title', 'Rating']]
                data_top_rating = data_top_rating.sort_values(by='Rating', ascending=False)
@@ -479,70 +499,107 @@ def cs_body(data_dipilih):
                     },
                     hide_index=True
                )
+
+               # About
+               with st.expander('About Visualization', expanded=False):
+                    st.write('''
+                         - :orange[**Data**]: [Web IMDB](www.imdb.com).
+                         - :orange[**High/Low Budget**]: Movies that have the highest and lowest budgets.
+                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
+                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
+                         - :orange[**Total Movies by Genre**]: Total number of movies by each genre.
+                         - :orange[**Total Movies by Year**]: Total number of films by year.
+                         - :orange[**First Week Gross Revenue**]: Total gross revenue of a movies in its first week.
+                    ''')
           
           st.markdown('''<hr>''', unsafe_allow_html=True)
         
           # Judul aplikasi
-          st.markdown("<h1 class='centered'>Movie List</h1>", unsafe_allow_html=True)
+          st.markdown("""
+               <h1 style='text-align: center;'>Movie List</h1>
+          """, unsafe_allow_html=True)
         
           # Folder gambar
           image_folder = "gambar"
 
-          cols = st.columns(6)
           num_cols = 6
 
-          for i in range(len(title)):
-               with cols[i % num_cols]:
-                    image_path = os.path.join(image_folder, image[i])
-                    if os.path.exists(image_path):
-                         st.image(image_path, use_column_width=True)
-                    else:
-                         st.markdown("![Image not available](https://via.placeholder.com/150)")
-                    st.markdown(title[i])
-                    st.markdown(rating[i])
-                    st.button("Detail", key=f"button_{i}")
-                    
-          # Menambahkan elemen kosong jika jumlah film tidak mengisi seluruh kolom pada baris terakhir
-          if len(title) % num_cols != 0:
-               for _ in range(num_cols - len(title) % num_cols):
-                    st.empty()
+          # Menampilkan film berdasarkan filter
+          for i in range(0, len(filtered_data), num_cols):
+               cols = st.columns(num_cols)
+               for j, index in enumerate(range(i, min(i + num_cols, len(filtered_data)))):
+                    row = filtered_data.iloc[index]
+                    with cols[j]:
+                         image_path = os.path.join(image_folder, row['Image'])
+                         if os.path.exists(image_path):
+                              st.image(image_path, use_column_width=True, caption=row['Title'])
+                              st.write(f"Rating: {row['Rating']:.1f}/10.0")
+                              if st.button("Details", key=f"details_{index}"):
+                                   st.write(f":orange[**Title :**] {row['Title']}")
+                                   st.write(f":orange[**Rating :**] {row['Rating']}/10.0")
+                                   st.write(f":orange[**Genre :**] {row['Genre']}")
+                                   st.write(f":orange[**Time :**] {row['Runtime']} Minutes")
+                                   st.write(f":orange[**Summary :**] {row['Summary']}")
 
-          # Pilih saham dari dropdown
-          selected_stock = st.selectbox('Pilih Film:', title)
+                                   # Tambahkan tombol untuk menerjemahkan deskripsi perusahaan
+                                   if st.button("Translate ke Indonesia", key=f"translate_{index}"):
+                                        # Inisialisasi objek Translator
+                                        translator = GoogleTranslator(source='en', target='id')
+                                        # Translate deskripsi dari bahasa Inggris ke bahasa Indonesia
+                                        summary_id = translator.translate(row['Summary'])
+                                        st.write(f":orange[**Translated Summary :**] {summary_id}")
+
+                                   # Fungsi untuk merubah teks deskripsi menjadi suara
+                                   def text_to_speech(text):
+                                        tts = gTTS(text=text, lang='en')  # Menggunakan gTTS untuk mengonversi teks ke suara dalam bahasa Inggris
+                                        speech = io.BytesIO()
+                                        tts.write_to_fp(speech)
+                                        return speech.getvalue()
+
+                                   # Tambahkan tombol untuk membaca deskripsi perusahaan
+                                   if st.button("Baca Deskripsi", key=f"read_{index}"):
+                                        speech_bytes = text_to_speech(row['Summary'])
+                                        st.audio(speech_bytes, format='audio/mp3')
+                         else:
+                              st.markdown("![Image not available](https://via.placeholder.com/150)")
+                    
+
+          # # # Pilih saham dari dropdown
+          # # selected_stock = st.selectbox('Pilih Film:', title)
         
-          # Temukan indeks saham yang dipilih di daftar perusahaan
-          index = title.index(selected_stock)
+          # # # Temukan indeks saham yang dipilih di daftar perusahaan
+          # # index = title.index(selected_stock)
         
-          # Tampilkan detail perusahaan yang dipilih
-          st.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid'>](https://streamlit.io/)'''.format(img_to_bytes(f"gambar/{image[index]}")), unsafe_allow_html=True)
-          st.write(f'Judul Film: {title[index]}')
-          st.write(f'Rating: {rating[index]}/10')
-          st.write(f'Genre: {genre[index]}')
-          st.write(f'Waktu: {runtime[index]} Menit')
-          st.write(f'Penjelasan Singkat:')
+          # # # Tampilkan detail perusahaan yang dipilih
+          # # st.markdown('''[<img src='data:image/png;base64,{}' class='img-fluid'>](https://streamlit.io/)'''.format(img_to_bytes(f"gambar/{image[index]}")), unsafe_allow_html=True)
+          # # st.write(f'Judul Film: {title[index]}')
+          # # st.write(f'Rating: {rating[index]}/10')
+          # # st.write(f'Genre: {genre[index]}')
+          # # st.write(f'Waktu: {runtime[index]} Menit')
+          # # st.write(f'Penjelasan Singkat:')
         
-          # Inisialisasi objek Translator
-          translator = GoogleTranslator(source='en', target='id')
+          # # Inisialisasi objek Translator
+          # translator = GoogleTranslator(source='en', target='id')
         
-          # Tambahkan tombol untuk membaca deskripsi perusahaan
-          if st.button("Translate ke Indonesia"):
-               # Translate deskripsi dari bahasa Inggris ke bahasa Indonesia
-               summary_id = translator.translate(summary[index])
-               summary[index] = summary_id
+          # # Tambahkan tombol untuk membaca deskripsi perusahaan
+          # if st.button("Translate ke Indonesia"):
+          #      # Translate deskripsi dari bahasa Inggris ke bahasa Indonesia
+          #      summary_id = translator.translate(summary[index])
+          #      summary[index] = summary_id
         
-          st.write(summary[index])
+          # st.write(summary[index])
         
-          # Fungsi untuk merubah teks deskripsi menjadi suara
-          def text_to_speech(text):
-               tts = gTTS(text=text, lang='en')  # Menggunakan gTTS untuk mengonversi teks ke suara dalam bahasa Inggris
-               speech = io.BytesIO()
-               tts.write_to_fp(speech)
-               return speech.getvalue()
+          # # Fungsi untuk merubah teks deskripsi menjadi suara
+          # def text_to_speech(text):
+          #      tts = gTTS(text=text, lang='en')  # Menggunakan gTTS untuk mengonversi teks ke suara dalam bahasa Inggris
+          #      speech = io.BytesIO()
+          #      tts.write_to_fp(speech)
+          #      return speech.getvalue()
         
-          # Tambahkan tombol untuk membaca deskripsi perusahaan
-          if st.button("Baca Deskripsi"):
-               speech_bytes = text_to_speech(summary[index])
-               st.audio(speech_bytes, format='audio/mp3')
+          # # Tambahkan tombol untuk membaca deskripsi perusahaan
+          # if st.button("Baca Deskripsi"):
+          #      speech_bytes = text_to_speech(summary[index])
+          #      st.audio(speech_bytes, format='audio/mp3')
      else:
           st.write("Data yang dipilih tidak tersedia")
 
