@@ -3,8 +3,8 @@ matplotlib
 pandas
 gtts
 deep_translator
-seaborn
 altair
 mysql-connector-python
 streamlit-lightweight-charts
 openpyxl
+plotly
