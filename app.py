@@ -407,6 +407,8 @@ def cs_body(data_dipilih):
                st.plotly_chart(fig, use_container_width=True)
 
           with col3:
+               # Penambahan agar
+               st.markdown("""<h3 style='text-align: center;'></h3>""", unsafe_allow_html=True)
                # High/Low Budget
                sorted_data = baca.sort_values(by='Budget', ascending=False)
                top_film = sorted_data.iloc[0]
