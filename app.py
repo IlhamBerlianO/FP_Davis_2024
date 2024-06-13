@@ -88,18 +88,14 @@ def cs_body(data_dipilih):
                if filter_database_1 == "All":
                     composition = """
                          SELECT 
-                              dpc.EnglishProductCategoryName AS Category_Product,
-                              COUNT(dp.ProductKey) AS Total_Procut 
+                              dg.EnglishCountryRegionName AS Country,
+                              COUNT(dc.CustomerKey) AS Total_Customers
                          FROM 
-                              dimproductcategory dpc
+                              dimgeography dg
                          JOIN 
-                              dimproductsubcategory dpsc ON dpc.ProductCategoryKey = dpsc.ProductCategoryKey 
-                         JOIN
-                              dimproduct dp ON dpsc.ProductsubCategoryKey = dp.ProductsubCategoryKey
+                              dimcustomer dc ON dg.GeographyKey = dc.GeographyKey
                          GROUP BY 
-                              dpc.EnglishProductCategoryName
-                         ORDER BY 
-                              dpc.EnglishProductCategoryName;
+                              dg.EnglishCountryRegionName
                     """
                     cursor.execute(composition)
                     # Mengambil hasil query Composition
@@ -108,31 +104,35 @@ def cs_body(data_dipilih):
                elif filter_database_1:
                     composition = """
                          SELECT 
-                              dpc.EnglishProductCategoryName AS Category_Product,
-                              COUNT(dp.ProductKey) AS Total_Product 
+                              dg.EnglishCountryRegionName AS Country,
+                              COUNT(dc.CustomerKey) AS Total_Customers
                          FROM 
-                              dimproductcategory dpc
+                              dimgeography dg
                          JOIN 
-                              dimproductsubcategory dpsc ON dpc.ProductCategoryKey = dpsc.ProductCategoryKey 
-                         JOIN
-                              dimproduct dp ON dpsc.ProductSubcategoryKey = dp.ProductSubcategoryKey
-                         JOIN
-                              factinternetsales fs ON dp.ProductKey = fs.ProductKey
-                         JOIN
-                              dimtime t ON fs.OrderDateKey = t.TimeKey 
+                              dimcustomer dc ON dg.GeographyKey = dc.GeographyKey
+                         JOIN 
+                              factinternetsales fs ON dc.CustomerKey = fs.CustomerKey
+                         JOIN 
+                              dimtime t ON fs.OrderDateKey = t.TimeKey
                          WHERE 
                               t.CalendarYear = %s
                          GROUP BY 
-                              dpc.EnglishProductCategoryName
-                         ORDER BY 
-                              dpc.EnglishProductCategoryName;
-                         """
+                              dg.EnglishCountryRegionName
+                    """
                     cursor.execute(composition, (filter_database_1,))
                     # Mengambil hasil query Composition
                     hasil_composition = cursor.fetchall()
 
+               st.write(hasil_composition)
                # Plot Composition
-               data_composition = pd.DataFrame(hasil_composition, columns=['Category_Product', 'Total_Procut']) 
+               data_composition = pd.DataFrame(hasil_composition, columns=['Total_Customers', 'Country']) 
+               fig = px.pie(data_composition, values='Total_Customers', names='Country')
+               fig.update_layout(
+                    title={'text': 'Total Movies by Genre', 'font_size': 20, 'font_family': 'Arial'},
+                    margin=dict(b=90, t=50, r=10, l=0)
+               )
+
+               st.plotly_chart(fig)
                
           with col2:
                # Query SQL Comparison
@@ -208,7 +208,7 @@ def cs_body(data_dipilih):
                data_comparison = pd.DataFrame(hasil_comparison, columns=['Month', 'Total_Order_Quantity'])
                fig = px.line(data_comparison, x='Month', y='Total_Order_Quantity', markers=True)
                fig.update_layout(
-               title={'text': 'Total Sales Quantity by Month', 'font_size': 25, 'font_family': 'Arial'},
+               title={'text': 'Total Sales Quantity by Month', 'font_size': 20, 'font_family': 'Arial'},
                xaxis_title='Month',
                yaxis_title='Total Product'
                )
@@ -225,7 +225,7 @@ def cs_body(data_dipilih):
                )
 
                fig.update_layout(
-                    title={'text': 'Relationship between PSC and PP', 'font_size': 25, 'font_family': 'Arial'},
+                    title={'text': 'Relationship between PSC and PP', 'font_size': 20, 'font_family': 'Arial'},
                     xaxis=dict(showgrid=True, title='Product Standard Cost'),
                     yaxis=dict(showgrid=True, title='Product Price'), 
                     showlegend=False,
@@ -291,7 +291,7 @@ def cs_body(data_dipilih):
                ).configure_axis(
                     grid=True
                ).interactive().properties(
-                    title=alt.TitleParams('First Week Gross Revenue', fontSize=25, fontWeight='bold', font='Arial')
+                    title=alt.TitleParams('First Week Gross Revenue', fontSize=20, fontWeight='bold', font='Arial')
                )
 
                st.altair_chart(chart1, use_container_width=True)
