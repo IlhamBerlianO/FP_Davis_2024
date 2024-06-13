@@ -61,6 +61,7 @@ def cs_body(data_dipilih):
                     return None
           
           connection = create_connection()
+          st.write(connection)
 
           st.sidebar.subheader("Sidebar berubah untuk Database Dump_AW")
           filter_database_1= st.sidebar.selectbox("Genres", ["Filter A", "Filter B", "Filter C"])
@@ -163,197 +164,197 @@ def cs_body(data_dipilih):
                >>>    st.write("Please contact us to get access!")
           ''')
      
-          #######################################
-          # COLUMN 2
-          #######################################
-          # Display interactive widgets
-          col2.subheader('Display interactive widgets')
-          col2.code('''
-               st.button('Hit me')
-               st.data_editor('Edit data', data)
-               st.checkbox('Check me out')
-               st.radio('Pick one:', ['nose','ear'])
-               st.selectbox('Select', [1,2,3])
-               st.multiselect('Multiselect', [1,2,3])
-               st.slider('Slide me', min_value=0, max_value=10)
-               st.select_slider('Slide to select', options=[1,'2'])
-               st.text_input('Enter some text')
-               st.number_input('Enter a number')
-               st.text_area('Area for textual entry')
-               st.date_input('Date input')
-               st.time_input('Time entry')
-               st.file_uploader('File uploader')
-               st.download_button('On the dl', data)
-               st.camera_input("一二三,茄子!")
-               st.color_picker('Pick a color')
-          ''')
+          # #######################################
+          # # COLUMN 2
+          # #######################################
+          # # Display interactive widgets
+          # col2.subheader('Display interactive widgets')
+          # col2.code('''
+          #      st.button('Hit me')
+          #      st.data_editor('Edit data', data)
+          #      st.checkbox('Check me out')
+          #      st.radio('Pick one:', ['nose','ear'])
+          #      st.selectbox('Select', [1,2,3])
+          #      st.multiselect('Multiselect', [1,2,3])
+          #      st.slider('Slide me', min_value=0, max_value=10)
+          #      st.select_slider('Slide to select', options=[1,'2'])
+          #      st.text_input('Enter some text')
+          #      st.number_input('Enter a number')
+          #      st.text_area('Area for textual entry')
+          #      st.date_input('Date input')
+          #      st.time_input('Time entry')
+          #      st.file_uploader('File uploader')
+          #      st.download_button('On the dl', data)
+          #      st.camera_input("一二三,茄子!")
+          #      st.color_picker('Pick a color')
+          # ''')
      
-          col2.code('''
-               # Use widgets\' returned values in variables
-               >>> for i in range(int(st.number_input('Num:'))): foo()
-               >>> if st.sidebar.selectbox('I:',['f']) == 'f': b()
-               >>> my_slider_val = st.slider('Quinn Mallory', 1, 88)
-               >>> st.write(slider_val)
-          ''')
-          col2.code('''
-               # Disable widgets to remove interactivity:
-               >>> st.slider('Pick a number', 0, 100, disabled=True)
-          ''')
+          # col2.code('''
+          #      # Use widgets\' returned values in variables
+          #      >>> for i in range(int(st.number_input('Num:'))): foo()
+          #      >>> if st.sidebar.selectbox('I:',['f']) == 'f': b()
+          #      >>> my_slider_val = st.slider('Quinn Mallory', 1, 88)
+          #      >>> st.write(slider_val)
+          # ''')
+          # col2.code('''
+          #      # Disable widgets to remove interactivity:
+          #      >>> st.slider('Pick a number', 0, 100, disabled=True)
+          # ''')
      
-          # Build chat-based apps
-          col2.subheader('Build chat-based apps')
-          col2.code('''
-               # Insert a chat message container.
-               >>> with st.chat_message("user"):
-               >>>    st.write("Hello 👋")
-               >>>    st.line_chart(np.random.randn(30, 3))
+          # # Build chat-based apps
+          # col2.subheader('Build chat-based apps')
+          # col2.code('''
+          #      # Insert a chat message container.
+          #      >>> with st.chat_message("user"):
+          #      >>>    st.write("Hello 👋")
+          #      >>>    st.line_chart(np.random.randn(30, 3))
           
-               # Display a chat input widget.
-               >>> st.chat_input("Say something")          
-          ''')
+          #      # Display a chat input widget.
+          #      >>> st.chat_input("Say something")          
+          # ''')
      
-          col2.markdown('<small>Learn how to [build chat-based apps](https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps)</small>', unsafe_allow_html=True)
+          # col2.markdown('<small>Learn how to [build chat-based apps](https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps)</small>', unsafe_allow_html=True)
      
-          # Mutate data
-          col2.subheader('Mutate data')
-          col2.code('''
-               # Add rows to a dataframe after
-               # showing it.
-               >>> element = st.dataframe(df1)
-               >>> element.add_rows(df2)
+          # # Mutate data
+          # col2.subheader('Mutate data')
+          # col2.code('''
+          #      # Add rows to a dataframe after
+          #      # showing it.
+          #      >>> element = st.dataframe(df1)
+          #      >>> element.add_rows(df2)
           
-               # Add rows to a chart after
-               # showing it.
-               >>> element = st.line_chart(df1)
-               >>> element.add_rows(df2)
-          ''')
+          #      # Add rows to a chart after
+          #      # showing it.
+          #      >>> element = st.line_chart(df1)
+          #      >>> element.add_rows(df2)
+          # ''')
      
-          # Display code
-          col2.subheader('Display code')
-          col2.code('''
-               st.echo()
-               >>> with st.echo():
-               >>>     st.write('Code will be executed and printed')
-          ''')
+          # # Display code
+          # col2.subheader('Display code')
+          # col2.code('''
+          #      st.echo()
+          #      >>> with st.echo():
+          #      >>>     st.write('Code will be executed and printed')
+          # ''')
      
-          # Placeholders, help, and options
-          col2.subheader('Placeholders, help, and options')
-          col2.code('''
-               # Replace any single element.
-               >>> element = st.empty()
-               >>> element.line_chart(...)
-               >>> element.text_input(...)  # Replaces previous.
+          # # Placeholders, help, and options
+          # col2.subheader('Placeholders, help, and options')
+          # col2.code('''
+          #      # Replace any single element.
+          #      >>> element = st.empty()
+          #      >>> element.line_chart(...)
+          #      >>> element.text_input(...)  # Replaces previous.
           
-               # Insert out of order.
-               >>> elements = st.container()
-               >>> elements.line_chart(...)
-               >>> st.write("Hello")
-               >>> elements.text_input(...)  # Appears above "Hello".
+          #      # Insert out of order.
+          #      >>> elements = st.container()
+          #      >>> elements.line_chart(...)
+          #      >>> st.write("Hello")
+          #      >>> elements.text_input(...)  # Appears above "Hello".
           
-               st.help(pandas.DataFrame)
-               st.get_option(key)
-               st.set_option(key, value)
-               st.set_page_config(layout='wide')
-               st.experimental_show(objects)
-               st.experimental_get_query_params()
-               st.experimental_set_query_params(**params)
-          ''')
+          #      st.help(pandas.DataFrame)
+          #      st.get_option(key)
+          #      st.set_option(key, value)
+          #      st.set_page_config(layout='wide')
+          #      st.experimental_show(objects)
+          #      st.experimental_get_query_params()
+          #      st.experimental_set_query_params(**params)
+          # ''')
      
-          #######################################
-          # COLUMN 3
-          #######################################
-          # Connect to data sources
-          col3.subheader('Connect to data sources')
-          col3.code('''
-               st.experimental_connection('pets_db', type='sql')
-               conn = st.experimental_connection('sql')
-               conn = st.experimental_connection('snowpark')
+          # #######################################
+          # # COLUMN 3
+          # #######################################
+          # # Connect to data sources
+          # col3.subheader('Connect to data sources')
+          # col3.code('''
+          #      st.experimental_connection('pets_db', type='sql')
+          #      conn = st.experimental_connection('sql')
+          #      conn = st.experimental_connection('snowpark')
           
-               >>> class MyConnection(ExperimentalBaseConnection[myconn.MyConnection]):
-               >>>    def _connect(self, **kwargs) -> MyConnection:
-               >>>        return myconn.connect(**self._secrets, **kwargs)
-               >>>    def query(self, query):
-               >>>       return self._instance.query(query)
-          ''')
+          #      >>> class MyConnection(ExperimentalBaseConnection[myconn.MyConnection]):
+          #      >>>    def _connect(self, **kwargs) -> MyConnection:
+          #      >>>        return myconn.connect(**self._secrets, **kwargs)
+          #      >>>    def query(self, query):
+          #      >>>       return self._instance.query(query)
+          # ''')
      
      
-          # Optimize performance
-          col3.subheader('Optimize performance')
-          col3.write('Cache data objects')
-          col3.code('''
-               # E.g. Dataframe computation, storing downloaded data, etc.
-               >>> @st.cache_data
-               ... def foo(bar):
-               ...   # Do something expensive and return data
-               ...   return data
-               # Executes foo
-               >>> d1 = foo(ref1)
-               # Does not execute foo
-               # Returns cached item by value, d1 == d2
-               >>> d2 = foo(ref1)
-               # Different arg, so function foo executes
-               >>> d3 = foo(ref2)
-               # Clear all cached entries for this function
-               >>> foo.clear()
-               # Clear values from *all* in-memory or on-disk cached functions
-               >>> st.cache_data.clear()
-          ''')
-          col3.write('Cache global resources')
-          col3.code('''
-               # E.g. TensorFlow session, database connection, etc.
-               >>> @st.cache_resource
-               ... def foo(bar):
-               ...   # Create and return a non-data object
-               ...   return session
-               # Executes foo
-               >>> s1 = foo(ref1)
-               # Does not execute foo
-               # Returns cached item by reference, s1 == s2
-               >>> s2 = foo(ref1)
-               # Different arg, so function foo executes
-               >>> s3 = foo(ref2)
-               # Clear all cached entries for this function
-               >>> foo.clear()
-               # Clear all global resources from cache
-               >>> st.cache_resource.clear()
-          ''')
-          col3.write('Deprecated caching')
-          col3.code('''
-               >>> @st.cache
-               ... def foo(bar):
-               ...   # Do something expensive in here...
-               ...   return data
-               >>> # Executes foo
-               >>> d1 = foo(ref1)
-               >>> # Does not execute foo
-               >>> # Returns cached item by reference, d1 == d2
-               >>> d2 = foo(ref1)
-               >>> # Different arg, so function foo executes
-               >>> d3 = foo(ref2)
-          ''')
+          # # Optimize performance
+          # col3.subheader('Optimize performance')
+          # col3.write('Cache data objects')
+          # col3.code('''
+          #      # E.g. Dataframe computation, storing downloaded data, etc.
+          #      >>> @st.cache_data
+          #      ... def foo(bar):
+          #      ...   # Do something expensive and return data
+          #      ...   return data
+          #      # Executes foo
+          #      >>> d1 = foo(ref1)
+          #      # Does not execute foo
+          #      # Returns cached item by value, d1 == d2
+          #      >>> d2 = foo(ref1)
+          #      # Different arg, so function foo executes
+          #      >>> d3 = foo(ref2)
+          #      # Clear all cached entries for this function
+          #      >>> foo.clear()
+          #      # Clear values from *all* in-memory or on-disk cached functions
+          #      >>> st.cache_data.clear()
+          # ''')
+          # col3.write('Cache global resources')
+          # col3.code('''
+          #      # E.g. TensorFlow session, database connection, etc.
+          #      >>> @st.cache_resource
+          #      ... def foo(bar):
+          #      ...   # Create and return a non-data object
+          #      ...   return session
+          #      # Executes foo
+          #      >>> s1 = foo(ref1)
+          #      # Does not execute foo
+          #      # Returns cached item by reference, s1 == s2
+          #      >>> s2 = foo(ref1)
+          #      # Different arg, so function foo executes
+          #      >>> s3 = foo(ref2)
+          #      # Clear all cached entries for this function
+          #      >>> foo.clear()
+          #      # Clear all global resources from cache
+          #      >>> st.cache_resource.clear()
+          # ''')
+          # col3.write('Deprecated caching')
+          # col3.code('''
+          #      >>> @st.cache
+          #      ... def foo(bar):
+          #      ...   # Do something expensive in here...
+          #      ...   return data
+          #      >>> # Executes foo
+          #      >>> d1 = foo(ref1)
+          #      >>> # Does not execute foo
+          #      >>> # Returns cached item by reference, d1 == d2
+          #      >>> d2 = foo(ref1)
+          #      >>> # Different arg, so function foo executes
+          #      >>> d3 = foo(ref2)
+          # ''')
      
-          # Display progress and status
-          col3.subheader('Display progress and status')
-          col3.code('''
-               # Show a spinner during a process
-               >>> with st.spinner(text='In progress'):
-               >>>   time.sleep(3)
-               >>>   st.success('Done')
+          # # Display progress and status
+          # col3.subheader('Display progress and status')
+          # col3.code('''
+          #      # Show a spinner during a process
+          #      >>> with st.spinner(text='In progress'):
+          #      >>>   time.sleep(3)
+          #      >>>   st.success('Done')
                
-               # Show and update progress bar
-               >>> bar = st.progress(50)
-               >>> time.sleep(3)
-               >>> bar.progress(100)
+          #      # Show and update progress bar
+          #      >>> bar = st.progress(50)
+          #      >>> time.sleep(3)
+          #      >>> bar.progress(100)
                
-               st.balloons()
-               st.snow()
-               st.toast('Mr Stay-Puft')
-               st.error('Error message')
-               st.warning('Warning message')
-               st.info('Info message')
-               st.success('Success message')
-               st.exception(e)
-          ''')
+          #      st.balloons()
+          #      st.snow()
+          #      st.toast('Mr Stay-Puft')
+          #      st.error('Error message')
+          #      st.warning('Warning message')
+          #      st.info('Info message')
+          #      st.success('Success message')
+          #      st.exception(e)
+          # ''')
          
      elif data_dipilih == "Scrapping IMDB":
           # Membaca file excel
@@ -504,12 +505,12 @@ def cs_body(data_dipilih):
                with st.expander('About Visualization', expanded=False):
                     st.write('''
                          - :orange[**Data**]: [Web IMDB](www.imdb.com).
-                         - :orange[**High/Low Budget**]: Movies that have the highest and lowest budgets.
-                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
-                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
-                         - :orange[**Total Movies by Genre**]: Total number of movies by each genre.
-                         - :orange[**Total Movies by Year**]: Total number of films by year.
                          - :orange[**First Week Gross Revenue**]: Total gross revenue of a movies in its first week.
+                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
+                         - :orange[**High/Low Budget**]: Movies that have the highest and lowest budgets.
+                         - :orange[**Total Movies by Genre**]: Total number of movies by each genre.
+                         - :orange[**Total Movies by Year**]: Total number of movies by year.
+                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
                     ''')
           
           st.markdown('''<hr>''', unsafe_allow_html=True)
@@ -534,35 +535,36 @@ def cs_body(data_dipilih):
                          if os.path.exists(image_path):
                               st.image(image_path, use_column_width=True, caption=row['Title'])
                               st.write(f"Rating: {row['Rating']:.1f}/10.0")
-                              if st.button("Details", key=f"details_{index}"):
+                              # Button Detail of movie
+                              if st.button("Detail of movie", key=f"details_{index}"):
                                    st.write(f":orange[**Title :**] {row['Title']}")
                                    st.write(f":orange[**Rating :**] {row['Rating']}/10.0")
                                    st.write(f":orange[**Genre :**] {row['Genre']}")
                                    st.write(f":orange[**Time :**] {row['Runtime']} Minutes")
                                    st.write(f":orange[**Summary :**] {row['Summary']}")
 
-                                   # Tambahkan tombol untuk menerjemahkan deskripsi perusahaan
-                                   if st.button("Translate ke Indonesia", key=f"translate_{index}"):
-                                        # Inisialisasi objek Translator
-                                        translator = GoogleTranslator(source='en', target='id')
-                                        # Translate deskripsi dari bahasa Inggris ke bahasa Indonesia
-                                        summary_id = translator.translate(row['Summary'])
-                                        st.write(f":orange[**Translated Summary :**] {summary_id}")
+                              # Fungsi untuk merubah teks deskripsi menjadi suara
+                              def text_to_speech(text):
+                                   tts = gTTS(text=text, lang='en')  
+                                   speech = io.BytesIO()
+                                   tts.write_to_fp(speech)
+                                   return speech.getvalue()
+                              
+                              # Button Summari in sound
+                              if st.button("Summary in sound", key=f"read_{index}"):
+                                   speech_bytes = text_to_speech(row['Summary'])
+                                   st.audio(speech_bytes, format='audio/mp3')
 
-                                   # Fungsi untuk merubah teks deskripsi menjadi suara
-                                   def text_to_speech(text):
-                                        tts = gTTS(text=text, lang='en')  # Menggunakan gTTS untuk mengonversi teks ke suara dalam bahasa Inggris
-                                        speech = io.BytesIO()
-                                        tts.write_to_fp(speech)
-                                        return speech.getvalue()
-
-                                   # Tambahkan tombol untuk membaca deskripsi perusahaan
-                                   if st.button("Baca Deskripsi", key=f"read_{index}"):
-                                        speech_bytes = text_to_speech(row['Summary'])
-                                        st.audio(speech_bytes, format='audio/mp3')
+                              # Button Translate to Indonesian
+                              if st.button("Translate to Indonesian", key=f"translate_{index}"):
+                                   translator = GoogleTranslator(source='en', target='id')
+                                   summary_id = translator.translate(row['Summary'])
+                                   st.write(f":orange[**Translated Summary :**] {summary_id}")
+                              
+                              st.markdown('') # Hanya penambah space saja
                          else:
                               st.markdown("![Image not available](https://via.placeholder.com/150)")
-                    
+               st.markdown('''<hr>''', unsafe_allow_html=True)
 
           # # # Pilih saham dari dropdown
           # # selected_stock = st.selectbox('Pilih Film:', title)
