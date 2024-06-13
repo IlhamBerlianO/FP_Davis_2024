@@ -340,7 +340,7 @@ def cs_body(data_dipilih):
           """, unsafe_allow_html=True)
 
           # Deskripsikan col
-          col1, col2, col3 = st.columns([1.5, 2, 1])
+          col1, col2, col3 = st.columns([1, 2, 1])
 
           # Menampilkan konten 
           with col1:
@@ -375,6 +375,7 @@ def cs_body(data_dipilih):
                st.plotly_chart(fig,use_container_width=True)
 
           with col2:
+               # Penambahan space agar rapi
                st.write('')
                st.write('')
                # Top 5 Movies
@@ -392,7 +393,6 @@ def cs_body(data_dipilih):
 
                st.altair_chart(chart1, use_container_width=True)
 
-
                # Total Movies by Year
                baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
                baca['Year'] = baca['Opening_week_date'].dt.year
@@ -406,8 +406,9 @@ def cs_body(data_dipilih):
                st.plotly_chart(fig, use_container_width=True)
 
           with col3:
-               # Penambahan agar
-               st.markdown("""<h3 style='text-align: center;'></h3>""", unsafe_allow_html=True)
+               # Penambahan space agar rapi
+               st.write('')
+               st.write('')
                # High/Low Budget
                sorted_data = baca.sort_values(by='Budget', ascending=False)
                top_film = sorted_data.iloc[0]
