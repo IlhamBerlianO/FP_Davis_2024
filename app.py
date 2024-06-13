@@ -132,6 +132,16 @@ def cs_body(data_dipilih):
                )
 
                st.plotly_chart(fig, use_container_width=True)
+
+               # About
+               with st.expander('About Visualization', expanded=False):
+                    st.write('''
+                         - :orange[**Data**]: Database Dump Adventure Work.
+                         - :orange[**Total Customers by Country**]: Look at the proportion of customers in each country.
+                         - :orange[**Total Sales Quantity by Month**]: Displays total product sales by month.
+                         - :orange[**Total Product by Category Product**]: See how many products are in each category.
+                         - :orange[**Relationship between PSC and PP**]: Seeing the relationship between Product Standard Cost and Product Price or Unit Price.
+                    ''')
                
           with col2:
                # Query SQL Comparison
@@ -219,7 +229,7 @@ def cs_body(data_dipilih):
                     x='ProductStandardCost', 
                     y='UnitPrice', 
                     hover_data=['ProductStandardCost', 'UnitPrice'],
-                    title='Film Gross Revenue',
+                    title='Relationship between Product Standard Cost and Product Price',
                     labels={'ProductStandardCost': 'Product Standard Cost', 'UnitPrice': 'Unit Price'}
                )
 
@@ -239,7 +249,7 @@ def cs_body(data_dipilih):
                     distribution = """
                          SELECT 
                               dpc.EnglishProductCategoryName AS Category_Product,
-                              COUNT(dp.ProductKey) AS Total_Procut 
+                              COUNT(dp.ProductKey) AS Total_Product 
                          FROM 
                               dimproductcategory dpc
                          JOIN 
@@ -282,15 +292,15 @@ def cs_body(data_dipilih):
                     hasil_distribution = cursor.fetchall()
 
                # Plot Distribution
-               data_distribution = pd.DataFrame(hasil_distribution, columns=['Category_Product', 'Total_Procut']) 
+               data_distribution = pd.DataFrame(hasil_distribution, columns=['Category_Product', 'Total_Product']) 
                chart1 = alt.Chart(data_distribution).mark_bar().encode(
                     x=alt.X('Category_Product:N', axis=alt.Axis(labelAngle=0, title='Category Product')),
-                    y=alt.Y('Total_Procut:Q', axis=alt.Axis(title='Total Product')),
-                    tooltip=['Category_Product', 'Total_Procut']
+                    y=alt.Y('Total_Product:Q', axis=alt.Axis(title='Total Product')),
+                    tooltip=['Category_Product', 'Total_Product']
                ).configure_axis(
                     grid=True
                ).interactive().properties(
-                    title=alt.TitleParams('First Week Gross Revenue', fontSize=20, fontWeight='bold', font='Arial')
+                    title=alt.TitleParams('Total Product by Category Product', fontSize=20, fontWeight='bold', font='Arial')
                )
 
                st.altair_chart(chart1, use_container_width=True)
@@ -473,7 +483,7 @@ def cs_body(data_dipilih):
                          image_path = os.path.join(image_folder, row['Image'])
                          if os.path.exists(image_path):
                               st.image(image_path, use_column_width=True, caption=row['Title'])
-                              st.write(f"Rating: {row['Rating']:.1f}/10.0")
+                              st.write(f"⭐: {row['Rating']:.1f}/10.0")
                               # Button Detail of movie
                               if st.button("Detail of movie", key=f"details_{index}"):
                                    st.write(f":orange[**Title :**] {row['Title']}")
