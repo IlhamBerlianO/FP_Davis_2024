@@ -78,7 +78,7 @@ def cs_body(data_dipilih):
 
           # Judul aplikasi
           st.markdown("""
-               <h1 style='text-align: center; margin-bottom: 40px;'>Visualization Dump Adventure Work</h1>
+               <h1 style='text-align: center; margin-bottom: 40px;'>💾Visualization Dump Adventure Work💾</h1>
           """, unsafe_allow_html=True)
 
           col1, col2, col3 = st.columns([1, 1.5, 1])
@@ -123,16 +123,15 @@ def cs_body(data_dipilih):
                     # Mengambil hasil query Composition
                     hasil_composition = cursor.fetchall()
 
-               st.write(hasil_composition)
                # Plot Composition
                data_composition = pd.DataFrame(hasil_composition, columns=['Total_Customers', 'Country']) 
                fig = px.pie(data_composition, values='Total_Customers', names='Country')
                fig.update_layout(
-                    title={'text': 'Total Movies by Genre', 'font_size': 20, 'font_family': 'Arial'},
+                    title={'text': 'Total Customers by Country', 'font_size': 20, 'font_family': 'Arial'},
                     margin=dict(b=90, t=50, r=10, l=0)
                )
 
-               st.plotly_chart(fig)
+               st.plotly_chart(fig, use_container_width=True)
                
           with col2:
                # Query SQL Comparison
@@ -336,7 +335,7 @@ def cs_body(data_dipilih):
 
           # Judul aplikasi
           st.markdown("""
-               <h1 style='text-align: center;'>Visualization IMDB</h1>
+               <h1 style='text-align: center;'>🎬Visualization IMDB🎬</h1>
           """, unsafe_allow_html=True)
 
           # Deskripsikan col
