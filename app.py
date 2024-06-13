@@ -340,7 +340,7 @@ def cs_body(data_dipilih):
           """, unsafe_allow_html=True)
 
           # Deskripsikan col
-          col1, col2, col3 = st.columns([1, 2, 1])
+          col1, col2, col3 = st.columns([1, 1.5, 1])
 
           # Menampilkan konten 
           with col1:
