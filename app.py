@@ -408,7 +408,6 @@ def cs_body(data_dipilih):
           with col3:
                # Penambahan space agar rapi
                st.write('')
-               st.write('')
                # High/Low Budget
                sorted_data = baca.sort_values(by='Budget', ascending=False)
                top_film = sorted_data.iloc[0]
