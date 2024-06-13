@@ -340,7 +340,7 @@ def cs_body(data_dipilih):
           """, unsafe_allow_html=True)
 
           # Deskripsikan col
-          col1, col2, col3 = st.columns([1, 2, 1.5])
+          col1, col2, col3 = st.columns([1.5, 2, 1])
 
           # Menampilkan konten 
           with col1:
@@ -376,7 +376,7 @@ def cs_body(data_dipilih):
 
           with col2:
                st.write('')
-               
+               st.write('')
                # Top 5 Movies
                top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
                
