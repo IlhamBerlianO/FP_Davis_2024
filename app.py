@@ -421,7 +421,7 @@ def cs_body(data_dipilih):
                st.metric(label=f"{low_film['Title']}", value=f"${low_film['Budget']:,.2f}", delta=f"-${budget_delta:,.2f}")
 
                # Penambahan agar rapi
-               st.markdown("""<h3 style='text-align: center; margin-bottom: 10px;'></h3>""", unsafe_allow_html=True)
+               st.markdown("""<h3 style='text-align: center; margin-bottom: 5px;'></h3>""", unsafe_allow_html=True)
                
                # Top Rating
                st.markdown("""<h3 style='font-size: 20px; font-family: Arial;';>Top Rating</h3>""", unsafe_allow_html=True)
