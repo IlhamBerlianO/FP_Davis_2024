@@ -81,7 +81,7 @@ def cs_body(data_dipilih):
                <h1 style='text-align: center; margin-bottom: 40px;'>Visualization Dump Adventure Work</h1>
           """, unsafe_allow_html=True)
 
-          col1, col2, col3 = st.columns([1, 2, 1])
+          col1, col2, col3 = st.columns([1, 1.5, 1])
 
           with col1:
                # Query SQL Comparison
@@ -339,8 +339,8 @@ def cs_body(data_dipilih):
                <h1 style='text-align: center;'>Visualization IMDB</h1>
           """, unsafe_allow_html=True)
 
-          # Deskripsikan col ke 1
-          col1, col2, col3 = st.columns([1, 2, 1])
+          # Deskripsikan col
+          col1, col2, col3 = st.columns([.9, 1.8, 1])
 
           # Menampilkan konten 
           with col1:
@@ -355,14 +355,28 @@ def cs_body(data_dipilih):
                     size_max=40)
 
                fig.update_layout(
-                    title={'text': 'First Week Gross Revenue', 'font_size': 25, 'font_family': 'Arial'},
-                    xaxis=dict(showgrid=False, showticklabels=False, title=''),
-                    yaxis=dict(showgrid=True, title=''), 
+                    title={'text': 'First Week Gross Revenue', 'font_size': 20, 'font_family': 'Arial'},
+                    xaxis=dict(showgrid=False, showticklabels=False, title='Title'),
+                    yaxis=dict(showgrid=True, title='Opening week rev'), 
                     showlegend=False
                )
 
                st.plotly_chart(fig, use_container_width=True)
+
+               # Total Movies by Genre
+               df_plotly = pd.DataFrame({'genre': value_unique_genres.index, 'total_movies': value_unique_genres.values})
+
+               fig = px.pie(df_plotly, values='total_movies', names='genre')
+               fig.update_layout(
+                    title={'text': 'Total Movies by Genre', 'font_size': 20, 'font_family': 'Arial'},
+                    margin=dict(b=90, t=50, r=10, l=0)
+               )
+
+               st.plotly_chart(fig,use_container_width=True)
+
           with col2:
+               # Penambahan agar rapi
+               st.markdown("""<h3 style='text-align: center; margin-bottom: 10px;'></h3>""", unsafe_allow_html=True)
                # Top 5 Movies
                top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
                
@@ -373,11 +387,27 @@ def cs_body(data_dipilih):
                ).configure_axis(
                     grid=False
                ).interactive().properties(
-                    title=alt.TitleParams('Top 5 Movies', fontSize=25, font='Arial')
+                    title=alt.TitleParams('Top 5 Movies', fontSize=20, font='Arial')
                )
 
                st.altair_chart(chart1, use_container_width=True)
+
+
+               # Total Movies by Year
+               baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
+               baca['Year'] = baca['Opening_week_date'].dt.year
+               film_per_year = baca.groupby('Year').size().reset_index(name='Total_Film')
+               fig = px.line(film_per_year, x='Year', y='Total_Film', markers=True)
+               fig.update_layout(
+                    title={'text': 'Total Movies by Year', 'font_size': 20, 'font_family': 'Arial'},
+                    xaxis_title='',
+                    yaxis_title=''
+               )
+               st.plotly_chart(fig, use_container_width=True)
+
           with col3:
+               # Penambahan agar rapi
+               st.markdown("""<h3 style='text-align: center;'></h3>""", unsafe_allow_html=True)
                # High/Low Budget
                sorted_data = baca.sort_values(by='Budget', ascending=False)
                top_film = sorted_data.iloc[0]
@@ -385,39 +415,17 @@ def cs_body(data_dipilih):
 
                budget_delta = top_film['Budget'] - low_film['Budget']
 
-               st.subheader("High/Low Budget")
+               st.markdown("""<h3 style='font-size: 20px; font-family: Arial;';>High/Low Budget</h3>""", unsafe_allow_html=True)
 
                st.metric(label=f"{top_film['Title']}", value=f"${top_film['Budget']:,.2f}", delta=f"${budget_delta:,.2f}")
                st.metric(label=f"{low_film['Title']}", value=f"${low_film['Budget']:,.2f}", delta=f"-${budget_delta:,.2f}")
+
+               # Penambahan agar rapi
+               st.markdown("""<h3 style='text-align: center; margin-bottom: 10px;'></h3>""", unsafe_allow_html=True)
                
-          # Deskripsikan col ke 2
-          col1, col2, col3 = st.columns([.9, 1.8, 1.2])
-          with col1:
-               # Total Movies by Genre
-               df_plotly = pd.DataFrame({'genre': value_unique_genres.index, 'total_movies': value_unique_genres.values})
-
-               fig = px.pie(df_plotly, values='total_movies', names='genre')
-               fig.update_layout(
-                    title={'text': 'Total Movies by Genre', 'font_size': 25, 'font_family': 'Arial'},
-                    margin=dict(b=90, t=50, r=10, l=0)
-               )
-
-               st.plotly_chart(fig,use_container_width=True)
-          with col2:
-               # Total Movies by Year
-               baca['Opening_week_date'] = pd.to_datetime(baca['Opening_week_date'])
-               baca['Year'] = baca['Opening_week_date'].dt.year
-               film_per_year = baca.groupby('Year').size().reset_index(name='Total_Film')
-               fig = px.line(film_per_year, x='Year', y='Total_Film', markers=True)
-               fig.update_layout(
-                    title={'text': 'Total Movies by Year', 'font_size': 25, 'font_family': 'Arial'},
-                    xaxis_title='',
-                    yaxis_title=''
-               )
-               st.plotly_chart(fig, use_container_width=True)
-          with col3:
                # Top Rating
-               st.subheader('Top Rating')
+               st.markdown("""<h3 style='font-size: 20px; font-family: Arial;';>Top Rating</h3>""", unsafe_allow_html=True)
+
                data_top_rating = baca[['Title', 'Rating']]
                data_top_rating = data_top_rating.sort_values(by='Rating', ascending=False)
                st.dataframe(
@@ -444,7 +452,7 @@ def cs_body(data_dipilih):
                          - :orange[**Total Movies by Year**]: Total number of movies by year.
                          - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
                     ''')
-
+          
           st.markdown('''<hr>''', unsafe_allow_html=True)
         
           # Judul aplikasi
