@@ -340,7 +340,7 @@ def cs_body(data_dipilih):
           """, unsafe_allow_html=True)
 
           # Deskripsikan col
-          col1, col2, col3 = st.columns([1, 1.5, 1])
+          col1, col2, col3 = st.columns([1, 2, 1.5])
 
           # Menampilkan konten 
           with col1:
@@ -375,6 +375,9 @@ def cs_body(data_dipilih):
                st.plotly_chart(fig,use_container_width=True)
 
           with col2:
+               # Penambahan agar rapi
+               st.markdown("""<h3 style='text-align: center; margin-bottom: 50px;'></h3>""", unsafe_allow_html=True)
+               
                # Top 5 Movies
                top5_grossing_films = baca.nlargest(5, 'Gross_us').sort_values(by='Gross_us', ascending=False)
                
