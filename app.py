@@ -78,11 +78,10 @@ def cs_body(data_dipilih):
 
           # Judul aplikasi
           st.markdown("""
-               <h1 style='text-align: center; margin-bottom: 40px;'>💾Visualization Dump Adventure Work💾</h1>
+               <h1 style='text-align: center; margin-bottom: 40px;'>💾Visualization Dump AW💾</h1>
           """, unsafe_allow_html=True)
 
           col1, col2, col3 = st.columns([1, 1.5, 1])
-
           with col1:
                # Query SQL Comparison
                if filter_database_1 == "All":
@@ -124,24 +123,14 @@ def cs_body(data_dipilih):
                     hasil_composition = cursor.fetchall()
 
                # Plot Composition
-               data_composition = pd.DataFrame(hasil_composition, columns=['Total_Customers', 'Country']) 
+               data_composition = pd.DataFrame(hasil_composition, columns=['Country', 'Total_Customers'])
+
                fig = px.pie(data_composition, values='Total_Customers', names='Country')
                fig.update_layout(
-                    title={'text': 'Total Customers by Country', 'font_size': 20, 'font_family': 'Arial'},
-                    margin=dict(b=90, t=50, r=10, l=0)
+                    title={'text': 'Total Customers by Country', 'font_size': 20, 'font_family': 'Arial'}
                )
 
                st.plotly_chart(fig, use_container_width=True)
-
-               # About
-               with st.expander('About Visualization', expanded=False):
-                    st.write('''
-                         - :orange[**Data**]: Database Dump Adventure Work.
-                         - :orange[**Total Customers by Country**]: Look at the proportion of customers in each country.
-                         - :orange[**Total Sales Quantity by Month**]: Displays total product sales by month.
-                         - :orange[**Total Product by Category Product**]: See how many products are in each category.
-                         - :orange[**Relationship between PSC and PP**]: Seeing the relationship between Product Standard Cost and Product Price or Unit Price.
-                    ''')
                
           with col2:
                # Query SQL Comparison
@@ -163,19 +152,6 @@ def cs_body(data_dipilih):
                     # Mengambil hasil query Comparison
                     hasil_comparison = cursor.fetchall()
 
-                    relationship = """
-                         SELECT 	
-                              f.ProductStandardCost, 
-                              f.UnitPrice 
-                         FROM 	
-                              factinternetsales as f 
-                         GROUP BY 	
-                              f.ProductStandardCost, f.UnitPrice;
-                    """
-                    cursor.execute(relationship)
-                    # Mengambil hasil query Relationship
-                    hasil_relationship = cursor.fetchall()
-
                elif filter_database_1:
                     comparison = """
                          SELECT 
@@ -196,51 +172,14 @@ def cs_body(data_dipilih):
                     # Mengambil hasil query Comparison
                     hasil_comparison = cursor.fetchall()
 
-                    relationship = """
-                         SELECT 
-                              f.ProductStandardCost,
-                              f.UnitPrice 
-                         FROM 
-                              factinternetsales as f
-                         JOIN 
-                              dimtime t ON f.OrderDateKey = t.TimeKey
-                         WHERE 
-                              t.CalendarYear = %s
-                         GROUP BY 
-                              f.ProductStandardCost, f.UnitPrice;
-                    """
-                    cursor.execute(relationship, (filter_database_1,))
-                    # Mengambil hasil query Relationship
-                    hasil_relationship = cursor.fetchall()
-
                # Plot Comparison
                data_comparison = pd.DataFrame(hasil_comparison, columns=['Month', 'Total_Order_Quantity'])
                fig = px.line(data_comparison, x='Month', y='Total_Order_Quantity', markers=True)
                fig.update_layout(
-               title={'text': 'Total Sales Quantity by Month', 'font_size': 20, 'font_family': 'Arial'},
-               xaxis_title='Month',
-               yaxis_title='Total Product'
+                    title={'text': 'Total Sales Quantity by Month', 'font_size': 20, 'font_family': 'Arial'},
+                    xaxis_title='Month',
+                    yaxis_title='Total Product'
                )
-               st.plotly_chart(fig, use_container_width=True)
-
-               # Plot Relationship
-               data_relationship = pd.DataFrame(hasil_relationship, columns=['ProductStandardCost', 'UnitPrice'])
-               fig = px.scatter(data_relationship, 
-                    x='ProductStandardCost', 
-                    y='UnitPrice', 
-                    hover_data=['ProductStandardCost', 'UnitPrice'],
-                    title='Relationship between Product Standard Cost and Product Price',
-                    labels={'ProductStandardCost': 'Product Standard Cost', 'UnitPrice': 'Unit Price'}
-               )
-
-               fig.update_layout(
-                    title={'text': 'Relationship between PSC and PP', 'font_size': 20, 'font_family': 'Arial'},
-                    xaxis=dict(showgrid=True, title='Product Standard Cost'),
-                    yaxis=dict(showgrid=True, title='Product Price'), 
-                    showlegend=False,
-                    margin=dict(b=0)
-               )
-
                st.plotly_chart(fig, use_container_width=True)
 
           with col3:
@@ -305,6 +244,71 @@ def cs_body(data_dipilih):
 
                st.altair_chart(chart1, use_container_width=True)
       
+          colsatu, coldua = st.columns([2.5,1])
+          with colsatu:
+               # Query SQL Comparison
+               if filter_database_1 == "All":
+                    relationship = """
+                         SELECT 	
+                              f.ProductStandardCost, 
+                              f.UnitPrice 
+                         FROM 	
+                              factinternetsales as f 
+                         GROUP BY 	
+                              f.ProductStandardCost, f.UnitPrice;
+                    """
+                    cursor.execute(relationship)
+                    # Mengambil hasil query Relationship
+                    hasil_relationship = cursor.fetchall()
+
+               elif filter_database_1:
+                    relationship = """
+                         SELECT 
+                              f.ProductStandardCost,
+                              f.UnitPrice 
+                         FROM 
+                              factinternetsales as f
+                         JOIN 
+                              dimtime t ON f.OrderDateKey = t.TimeKey
+                         WHERE 
+                              t.CalendarYear = %s
+                         GROUP BY 
+                              f.ProductStandardCost, f.UnitPrice;
+                    """
+                    cursor.execute(relationship, (filter_database_1,))
+                    # Mengambil hasil query Relationship
+                    hasil_relationship = cursor.fetchall()
+
+               # Plot Relationship
+               data_relationship = pd.DataFrame(hasil_relationship, columns=['ProductStandardCost', 'UnitPrice'])
+               fig = px.scatter(data_relationship, 
+                    x='ProductStandardCost', 
+                    y='UnitPrice', 
+                    hover_data=['ProductStandardCost', 'UnitPrice'],
+                    title='Relationship between Product Standard Cost and Product Price',
+                    labels={'ProductStandardCost': 'Product Standard Cost', 'UnitPrice': 'Unit Price'}
+               )
+
+               fig.update_layout(
+                    title={'text': 'Relationship Product Standard Cost and Product Price', 'font_size': 20, 'font_family': 'Arial'},
+                    xaxis=dict(showgrid=True, title='Product Standard Cost'),
+                    yaxis=dict(showgrid=True, title='Product Price'), 
+                    showlegend=False
+               )
+
+               st.plotly_chart(fig, use_container_width=True)
+
+          with coldua:
+               # About
+               with st.expander('About Visualization', expanded=False):
+                    st.write('''
+                         - :orange[**Data**]: Database Dump Adventure Work.
+                         - :orange[**Total Customers by Country**]: Look at the proportion of customers in each country.
+                         - :orange[**Total Sales Quantity by Month**]: Displays total product sales by month.
+                         - :orange[**Total Product by Category Product**]: See how many products are in each category.
+                         - :orange[**Relationship between PSC and PP**]: Seeing the relationship between Product Standard Cost and Product Price or Unit Price.
+                    ''')
+
      elif data_dipilih == "Scrapping IMDB":
           # Membaca file excel
           baca = pd.read_excel("scrapping_imdb/top_picks_data.xlsx")
@@ -483,7 +487,7 @@ def cs_body(data_dipilih):
                          image_path = os.path.join(image_folder, row['Image'])
                          if os.path.exists(image_path):
                               st.image(image_path, use_column_width=True, caption=row['Title'])
-                              st.write(f"⭐: {row['Rating']:.1f}/10.0")
+                              st.write(f"⭐ {row['Rating']:.1f}/10.0")
                               # Button Detail of movie
                               if st.button("Detail of movie", key=f"details_{index}"):
                                    st.write(f":orange[**Title :**] {row['Title']}")
