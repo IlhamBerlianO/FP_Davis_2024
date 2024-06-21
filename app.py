@@ -46,12 +46,13 @@ def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
           def create_connection():
                try:
+                    secrets = st.secrets["database"]
                     connection = mysql.connector.connect(
-                         host="kubela.id",
-                         user="davis2024irwan",
-                         passwd="wh451n9m@ch1n3",
-                         port=3306,  
-                         database="aw"
+                         host=secrets["host"],
+                         user=secrets["username"],
+                         passwd=secrets["password"],
+                         port=secrets["port"],
+                         database=secrets["database"]
                     )
                     if connection.is_connected():
                          # st.write("Connection to database was successful")
