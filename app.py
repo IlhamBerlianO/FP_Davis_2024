@@ -12,7 +12,6 @@ import mysql.connector
 from mysql.connector import Error
 from streamlit_lightweight_charts import renderLightweightCharts
 import plotly.express as px
-import toml
 
 # Initial page config
 st.set_page_config(
