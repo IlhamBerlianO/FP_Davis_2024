@@ -44,27 +44,22 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
-          # Function to create a connection to the database
-          def create_connection():
-               try:
-                    connection = mysql.connector.connect(
-                         host="kubela.id",
-                         user="davis2024irwan",
-                         passwd="wh451n9m@ch1n3",
-                         port=3306,  
-                         database="aw"
-                    )
-                    if connection.is_connected():
-                         # st.write("Connection to database was successful")
-                         return connection
-               except Error as e:
-                    print(f"Error: '{e}'")
-                    return None
-          
-          connection = create_connection()
+          # Access secrets from secrets.toml
+          database_host = st.secrets["database"]["host"]
+          database_username = st.secrets["database"]["username"]
+          database_password = st.secrets["database"]["password"]
+          database_port = st.secrets["database"]["port"]
+          database_name = st.secrets["database"]["database"]
+
+          # Use the credentials to connect to your database
+          conn = st.connection(
+               f"mysql://{database_username}:{database_password}@{database_host}:{database_port}/{database_name}",
+               type="sql",
+               autocomit=True
+          )
 
           # Untuk mendapatkan Year unik
-          cursor = connection.cursor()
+          cursor = conn.cursor()
           query = "SELECT DISTINCT CalendarYear FROM dimtime"
           cursor.execute(query)
           unique_years = [row[0] for row in cursor.fetchall()]
