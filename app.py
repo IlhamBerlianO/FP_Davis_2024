@@ -44,6 +44,7 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
+          # Mengkoneksikan pada Streamlit Cloud
           def create_connection():
                try:
                     secrets = st.secrets["database"]
