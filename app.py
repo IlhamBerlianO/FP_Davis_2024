@@ -44,13 +44,6 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
-          # Access secrets from secrets.toml
-          database_host = st.secrets["database"]["host"]
-          database_username = st.secrets["database"]["username"]
-          database_password = st.secrets["database"]["password"]
-          database_port = st.secrets["database"]["port"]
-          database_name = st.secrets["database"]["database"]
-
           # Use the credentials to connect to your database
           conn = st.connection("mydb", type="sql", autocomit=True)
 
