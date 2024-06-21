@@ -48,21 +48,21 @@ def cs_body(data_dipilih):
           # Load secrets from secret.toml file
           with open(".gitignore/secret.toml", "r") as f:
                secrets = toml.load(f)
-
+               
           # Function to create a connection to the database
           def create_connection():
                try:
                     connection = mysql.connector.connect(
-                         host=secrets["database"]["host"],
-                         user=secrets["database"]["username"],
-                         passwd=secrets["database"]["password"],
-                         port=secrets["database"]["port"],
-                         database=secrets["database"]["database"]
+                         host="kubela.id",
+                         user="davis2024irwan",
+                         passwd="wh451n9m@ch1n3",
+                         port=3306,  
+                         database="aw"
                     )
                     if connection.is_connected():
                          # st.write("Connection to database was successful")
                          return connection
-               except mysql.connector.Error as e:
+               except Error as e:
                     print(f"Error: '{e}'")
                     return None
           
