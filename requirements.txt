@@ -10,3 +10,4 @@ openpyxl
 plotly
 sqlalchemy
 pymysql
+MySQLdb
