@@ -12,6 +12,7 @@ import mysql.connector
 from mysql.connector import Error
 from streamlit_lightweight_charts import renderLightweightCharts
 import plotly.express as px
+from sqlalchemy import create_engine
 
 # Initial page config
 st.set_page_config(
@@ -44,8 +45,17 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
+          database_host = st.secrets["database"]["host"]
+          database_username = st.secrets["database"]["username"]
+          database_password = st.secrets["database"]["password"]
+          database_port = st.secrets["database"]["port"]
+          database_name = st.secrets["database"]["database"]
+
           # Use the credentials to connect to your database
-          conn = st.connection("mydb", type="sql", autocomit=True)
+          conn_string = f"mysql://{database_username}:{database_password}@{database_host}:{database_port}/{database_name}"
+          engine = create_engine(conn_string, isolation_level="AUTOCOMMIT")
+
+          conn = engine.connect()
 
           # Untuk mendapatkan Year unik
           cursor = conn.cursor()
