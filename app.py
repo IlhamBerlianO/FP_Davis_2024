@@ -302,11 +302,11 @@ def cs_body(data_dipilih):
                # About
                with st.expander('About Visualization', expanded=False):
                     st.write('''
-                         - :orange[**Data**]: Database Dump Adventure Work.
-                         - :orange[**Total Customers by Country**]: Look at the proportion of customers in each country.
-                         - :orange[**Total Sales Quantity by Month**]: Displays total product sales by month.
-                         - :orange[**Total Product by Category Product**]: See how many products are in each category.
-                         - :orange[**Relationship between PSC and PP**]: Seeing the relationship between Product Standard Cost and Product Price or Unit Price.
+                         - :orange[**Data**]: The data used is from the Dump Adventure Work database.
+                         - :orange[**Total Customers by Country**]: This graph shows the proportion of customers in each country. The graph shows that the United States has the highest number of subscribers, at around 42.3%, followed by Australia with the second highest number of subscribers, at around 19.4%. The country with the lowest number of customers is Canada, which is only 8.5%
+                         - :orange[**Total Sales Quantity by Month**]: This graph displays total product sales per month. It can be seen from the graph that the 5th and 6th months had the highest total product sales, namely 6,064 products sold in the 5th month and 6,080 products sold in the 6th month. However, there was a significant decrease in the 7th month where the products only 4,019 were sold.
+                         - :orange[**Total Product by Category Product**]: This graph shows the number of products in each category. From the graph, it can be seen that the category with the highest number of products is the Bicycle category, with 116 products. The Accessories and Clothing categories have almost the same number of products, namely 22 products in the Accessories category and 20 products in the Clothing category.
+                         - :orange[**Relationship between PSC and PP**]: This graph illustrates the relationship between Standard Product Cost and Product Price or Unit Price. For example, with a production cost of 2,172 per unit and a selling price of 3,578, it shows that the company would profit 1,407 from selling this unit (formula=standard product cost-unit price).
                     ''')
 
      elif data_dipilih == "Scrapping IMDB":
@@ -457,13 +457,13 @@ def cs_body(data_dipilih):
                # About
                with st.expander('About Visualization', expanded=False):
                     st.write('''
-                         - :orange[**Data**]: [Web IMDB](www.imdb.com).
-                         - :orange[**First Week Gross Revenue**]: Total gross revenue of a movies in its first week.
-                         - :orange[**Top 5 Movies**]: 5 highest grossing movies.
-                         - :orange[**High/Low Budget**]: Movies that have the highest and lowest budgets.
-                         - :orange[**Total Movies by Genre**]: Total number of movies by each genre.
-                         - :orange[**Total Movies by Year**]: Total number of movies by year.
-                         - :orange[**Top Rating**]: The order of movies is based on ratings in order from highest to lowest.
+                         - :orange[**Data**]: The data used in this visualization is from [Web IMDB](www.imdb.com).
+                         - :orange[**First Week Gross Revenue**]: The graph shows the gross revenue of a movies in its first week. It is evident that the movie titled Spider-Man: No Way Home had the highest gross revenue in the first week, amounting to 260.138.569 USD, followed by Jurassic World, which earned 208,806,270 USD in the first week. 
+                         - :orange[**Top 5 Movies**]: The graph displays the top 5 movies with the highest gross revenue. It shows that the movie with the highest gross revenue is titled Spider-Man: No Way Home, totaling 814.866.178 USD. Following that is Avatar: The Way of Water with 684.075.767 USD, Jurassic World with 653.406.625USD, Jurassic World: Fallen Kingdom with 417.719.760 USD, and finally Oppenheimer with 329.862.540 USD.
+                         - :orange[**High/Low Budget**]: According to this data, it shows which movie has the highest and lowest budgets. Spider-Man: No Way Home has the highest budget, amounting to 350.000.000.00 USD, while Godzilla has the lowest budget at 175.000.00 USD. The difference in budget between the highest and lowest is 349.825.000.00 USD.
+                         - :orange[**Total Movies by Genre**]: This graph shows the total number of films by genre. It can be seen from the graph that the genre most frequently used in films is Action at 29.5% or 36 films, followed by Adventure at 21.3% or 26 films.
+                         - :orange[**Total Movies by Year**]: This graph shows the total number of movies per year. It can be seen that from 1997 to 2013, there was only 1 movie each year based on the available data. However, there was an increase to 11 movies in 2024. Perhaps this is due to advancements in technology that have made the movie-making process easier.
+                         - :orange[**Top Rating**]: This table shows the ranking of films based on their ratings in order from highest to lowest. The film entitled Dune: Part Two has the highest rating, namely 8.6/10, while the film with the lowest rating is Godzilla: King of the Monsters which only has a rating of 6/10.
                     ''')
           
           st.markdown('''<hr>''', unsafe_allow_html=True)
