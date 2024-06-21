@@ -12,6 +12,7 @@ import mysql.connector
 from mysql.connector import Error
 from streamlit_lightweight_charts import renderLightweightCharts
 import plotly.express as px
+import toml
 
 # Initial page config
 st.set_page_config(
@@ -44,20 +45,24 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
+          # Load secrets from secret.toml file
+          with open(".gitignore/secret.toml", "r") as f:
+               secrets = toml.load(f)
+
           # Function to create a connection to the database
           def create_connection():
                try:
                     connection = mysql.connector.connect(
-                         host="kubela.id",
-                         user="davis2024irwan",
-                         passwd="wh451n9m@ch1n3",
-                         port=3306,  
-                         database="aw"
+                         host=secrets["database"]["host"],
+                         user=secrets["database"]["username"],
+                         passwd=secrets["database"]["password"],
+                         port=secrets["database"]["port"],
+                         database=secrets["database"]["database"]
                     )
                     if connection.is_connected():
                          # st.write("Connection to database was successful")
                          return connection
-               except Error as e:
+               except mysql.connector.Error as e:
                     print(f"Error: '{e}'")
                     return None
           
@@ -459,7 +464,7 @@ def cs_body(data_dipilih):
                     st.write('''
                          - :orange[**Data**]: The data used in this visualization is from [Web IMDB](www.imdb.com).
                          - :orange[**First Week Gross Revenue**]: The graph shows the gross revenue of a movies in its first week. It is evident that the movie titled Spider-Man: No Way Home had the highest gross revenue in the first week, amounting to 260.138.569 USD, followed by Jurassic World, which earned 208.806.270 USD in the first week. 
-                         - :orange[**Top 5 Movies**]: The graph displays the top 5 movies with the highest gross revenue. It shows that the movie with the highest gross revenue is titled Spider-Man: No Way Home, totaling 814.866.178 USD. Following that is Avatar: The Way of Water with 684.075.767 USD, Jurassic World with 653.406.625USD, Jurassic World: Fallen Kingdom with 417.719.760 USD, and finally Oppenheimer with 329.862.540 USD.
+                         - :orange[**Top 5 Movies**]: The graph displays the top 5 movies with the highest gross revenue. It shows that the movie with the highest gross revenue is titled Spider-Man: No Way Home, totaling 814.866.178 USD. Following that is Avatar: The Way of Water with 684.075.767 USD, Jurassic World with 653.406.625 USD, Jurassic World: Fallen Kingdom with 417.719.760 USD, and finally Oppenheimer with 329.862.540 USD.
                          - :orange[**High/Low Budget**]: According to this data, it shows which movie has the highest and lowest budgets. Spider-Man: No Way Home has the highest budget, amounting to 350.000.000.00 USD, while Godzilla has the lowest budget at 175.000.00 USD. The difference in budget between the highest and lowest is 349.825.000.00 USD.
                          - :orange[**Total Movies by Genre**]: This graph shows the total number of films by genre. It can be seen from the graph that the genre most frequently used in films is Action at 29.5% or 36 films, followed by Adventure at 21.3% or 26 films.
                          - :orange[**Total Movies by Year**]: This graph shows the total number of movies per year. It can be seen that from 1997 to 2013, there was only 1 movie each year based on the available data. However, there was an increase to 11 movies in 2024. Perhaps this is due to advancements in technology that have made the movie-making process easier.
