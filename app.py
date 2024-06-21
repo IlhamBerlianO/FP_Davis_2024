@@ -52,7 +52,7 @@ def cs_body(data_dipilih):
           database_name = st.secrets["database"]["database"]
 
           # Use the credentials to connect to your database
-          conn = st.connection("database", type="sql", autocomit=True)
+          conn = st.connection("mydb", type="sql", autocomit=True)
 
           # Untuk mendapatkan Year unik
           cursor = conn.cursor()
