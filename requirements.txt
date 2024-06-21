@@ -8,6 +8,3 @@ mysql-connector-python
 streamlit-lightweight-charts
 openpyxl
 plotly
-sqlalchemy
-pymysql
-MySQLdb
