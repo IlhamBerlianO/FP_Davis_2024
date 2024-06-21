@@ -44,10 +44,6 @@ def cs_sidebar():
 ##########################
 def cs_body(data_dipilih):
      if data_dipilih == "Database Dump_AW":
-          # Load secrets from secret.toml file
-          with open(".gitignore/secret.toml", "r") as f:
-               secrets = toml.load(f)
-               
           # Function to create a connection to the database
           def create_connection():
                try:
